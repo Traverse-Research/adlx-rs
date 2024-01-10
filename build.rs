@@ -1,16 +1,11 @@
 use std::{env, path::PathBuf};
 
 fn main() {
-    println!("cargo:rerun-if-changed=wrapper.h");
+    println!("cargo:rerun-if-changed=src/adlx/wrapper.h");
 
     let bindings = bindgen::Builder::default()
         .header("src/adlx/wrapper.h")
-        .blocklist_type("_IMAGE_TLS_DIRECTORY64")
-        .blocklist_type("IMAGE_TLS_DIRECTORY64")
-        .blocklist_type("IMAGE_TLS_DIRECTORY")
-        .blocklist_type("PIMAGE_TLS_DIRECTORY64")
-        .blocklist_type("PIMAGE_TLS_DIRECTORY")
-        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
+        .allowlist_item("I?ADLX\\w+")
         .generate()
         .expect("failed to generate adlx bindings");
 
