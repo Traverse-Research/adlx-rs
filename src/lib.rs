@@ -1,5 +1,5 @@
-pub mod helper;
 mod bindings;
+pub mod helper;
 
 fn test() {
     unsafe {

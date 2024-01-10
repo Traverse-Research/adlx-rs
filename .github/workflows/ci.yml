@@ -1,0 +1,28 @@
+on:
+  push:
+  pull_request:
+
+jobs:
+  rust:
+    name: Lint Rust code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cargo fmt
+        run: cargo fmt --all -- --check
+      - name: Cargo clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+      - name: Cargo test
+        run: cargo test --workspace
+
+  rust-msrv:
+    name: Build-test MSRV (1.74) with minal crate dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - name: Generate minimal-version dependencies
+        run: cargo -Zminimal-versions generate-lockfile
+      - uses: dtolnay/rust-toolchain@1.74.0
+      - name: Cargo check
+        run: cargo check --workspace --all-targets

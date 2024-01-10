@@ -1,7 +1,15 @@
 [package]
 name = "adlx-rs"
 version = "0.1.0"
+authors = ["Traverse Research <support@traverseresearch.nl>"]
 edition = "2021"
+license = "MIT"
+homepage = "https://traverseresearch.nl"
+repository = "https://github.com/Traverse-Research/rust-template"
+description = "A useful description"
+include = ["src", "LICENSE"]
+categories = [] # https://crates.io/category_slugs
+keywords = []
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
