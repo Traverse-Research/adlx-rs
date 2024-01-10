@@ -1,28 +1,26 @@
-use crate::bindings;
+use std::ffi::CStr;
+
 use anyhow::Context;
 
-const ADLX_DLL_NAME: &str = "amdadlx64.dll";
-const ADLX_QUERY_FULL_VERSION_FUNCTION_NAME: &str = "ADLXQueryFullVersion";
-const ADLX_QUERY_VERSION_FUNCTION_NAME: &str = "ADLXQuerVersion";
-const ADLX_INIT_WITH_CALLER_ADL_FUNCTION_NAME: &str = "ADLXInitializeWithCalledAdl";
-const ADLX_INIT_FUNCTION_NAME: &str = "ADLXInitialize";
-const ADLX_TERMINATE_FUNCTION_NAME: &str = "ADLXTerminate";
-
-type AdlxInitFunction =
-    unsafe extern "C" fn(u64, *mut *mut bindings::IADLXSystem) -> bindings::ADLX_RESULT;
+use crate::bindings;
 
 pub struct AdlxHelper {
     lib: libloading::Library,
-
-    init_fn: AdlxInitFunction,
+    init_fn: bindings::ADLXInitialize_Fn,
 }
 
 pub fn init_helper() -> anyhow::Result<AdlxHelper> {
     let helper = unsafe {
-        let lib = libloading::Library::new(ADLX_DLL_NAME).context("Failed to load amdadlx DLL")?;
+        // libloading requires an OsString, not a CStr.
+        let dll_name = CStr::from_bytes_with_nul(bindings::ADLX_DLL_NAME)
+            .unwrap()
+            .to_str()
+            .unwrap();
+        let lib = libloading::Library::new(dll_name)
+            .with_context(|| format!("Failed to load `{dll_name}`"))?;
 
         let init_fn = *lib
-            .get(ADLX_INIT_FUNCTION_NAME.as_bytes())
+            .get(bindings::ADLX_INIT_FUNCTION_NAME)
             .context("Failed to get init function")?;
 
         AdlxHelper { lib, init_fn }
