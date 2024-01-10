@@ -1,10 +1,6 @@
 #![doc = include_str!("../README.md")]
 
-mod bindings;
-pub mod helper;
-
-fn test() {
-    unsafe {
-        // IADLXGPUMetrics::new();
-    }
-}
+// TODO: More-higher-level wrappers around adlx here?
+pub mod adlx;
+// TODO: Move
+pub mod bindings;
