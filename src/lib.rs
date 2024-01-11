@@ -4,3 +4,5 @@
 pub mod adlx;
 // TODO: Move
 pub mod bindings;
+
+pub use adlx::*;
