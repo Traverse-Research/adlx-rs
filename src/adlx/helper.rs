@@ -1,9 +1,16 @@
-use std::ffi::CStr;
+use std::{ffi::CStr, mem::MaybeUninit};
 
 use anyhow::{ensure, Context, Result};
 
 use super::{result::Error, system::System};
 use crate::bindings as ffi;
+
+// Taken from ADLXDefines.h.
+// Refer to ADLX_MAKE_FULL_VERSION and ADLX_FULL_VERSION.
+const HEADER_VERSION: u64 = ((ffi::ADLX_VER_MAJOR as u64) << 48)
+    | ((ffi::ADLX_VER_MINOR as u64) << 32)
+    | ((ffi::ADLX_VER_RELEASE as u64) << 16)
+    | (ffi::ADLX_VER_BUILD_NUM as u64);
 
 // TODO: This should be a singleton
 
@@ -19,7 +26,7 @@ struct AdlxFunctions {
 }
 
 impl AdlxFunctions {
-    unsafe fn new() -> anyhow::Result<Self> {
+    unsafe fn load() -> anyhow::Result<Self> {
         let dll_name = CStr::from_bytes_with_nul(ffi::ADLX_DLL_NAME)
             .unwrap()
             .to_str()
@@ -79,29 +86,27 @@ pub struct AdlxHelper {
 
 impl AdlxHelper {
     pub fn new() -> Result<Self> {
-        let functions = unsafe { AdlxFunctions::new()? };
+        let functions = unsafe { AdlxFunctions::load()? };
 
         let full_version = unsafe {
-            let mut full_version = 0;
-            Error::from_result((functions.full_version_fn.unwrap())(&mut full_version))?;
-            full_version
+            let mut full_version = MaybeUninit::uninit();
+            let result = (functions.full_version_fn.unwrap())(full_version.as_mut_ptr());
+
+            Error::from_result_with_assume_init_on_success(result, full_version)?
         };
 
         let version = unsafe {
-            let mut version = std::ptr::null();
-            Error::from_result((functions.version_fn.unwrap())(&mut version))?;
-            CStr::from_ptr(version).to_str()?.to_string()
+            let mut version = MaybeUninit::uninit();
+            let result = (functions.version_fn.unwrap())(version.as_mut_ptr());
+            Error::from_result_with_assume_init_on_success(result, version).map(|version| CStr::from_ptr(version).to_str().unwrap().to_string())?            
         };
 
         // TODO: C++ helper does extra things if an ADL context is provided.
         // We don't support this currently because we are only implementing ADLX
         let system = unsafe {
             let mut system = std::ptr::null_mut();
-            let init_full_version = ((ffi::ADLX_VER_MAJOR as u64) << 48)
-                | ((ffi::ADLX_VER_MINOR as u64) << 32)
-                | ((ffi::ADLX_VER_RELEASE as u64) << 16)
-                | (ffi::ADLX_VER_BUILD_NUM as u64);
-            Error::from_result((functions.init_fn.unwrap())(init_full_version, &mut system))?;
+            
+            Error::from_result((functions.init_fn.unwrap())(HEADER_VERSION, &mut system))?;
 
             System::from_raw(system)
         };
