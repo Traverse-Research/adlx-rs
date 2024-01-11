@@ -1,17 +1,16 @@
 use std::mem::MaybeUninit;
 
-use crate::bindings::{self as ffi, IADLXInterface};
-
 use super::{
-    interface::Interface,
+    interface::{Interface, InterfaceImpl},
     result::{Error, Result},
 };
+use crate::bindings as ffi;
 
 /// [`System`] is a singleton interface.  It looks similar to but is not compatible with
 /// [`Interface`].
 #[derive(Debug)]
-#[doc(alias = "IADLXSystem")]
 #[repr(transparent)]
+#[doc(alias = "IADLXSystem")]
 pub struct System(*mut ffi::IADLXSystem);
 
 impl System {
@@ -59,7 +58,7 @@ impl System {
                 interface.as_mut_ptr(),
             )
         };
-        Error::from_result(result).map(|()| unsafe { I::from_raw(interface.assume_init()) })
+        Error::from_result(result).map(|()| unsafe { I::from_raw(interface.assume_init().cast()) })
     }
     // #[doc(alias = "GetDisplaysServices")]
     // pub fn GetDisplaysServices(&self) -> Result<()> {
@@ -127,11 +126,12 @@ impl System {
 }
 
 #[derive(Clone, Debug)]
-#[doc(alias = "IADLXSystem1")]
 #[repr(transparent)]
-pub struct System1(IADLXInterface);
+#[doc(alias = "IADLXSystem1")]
+pub struct System1(InterfaceImpl);
 
 unsafe impl Interface for System1 {
+    type Impl = ffi::IADLXSystem1;
     type Vtable = ffi::IADLXSystem1Vtbl;
     const IID: &'static str = "IADLXSystem1";
 }
@@ -140,11 +140,9 @@ impl System1 {
     // #[doc(alias = "GetPowerTuningServices")]
     // pub fn power_tuning_services(&self) -> Result<PowerTuningServices> {
     //     let mut ret = MaybeUninit::uninit();
-    //     let result = self.vtable().GetPowerTuningServices(
-    //         // TODO: Make it easier to get the actual self pointer type, while maintaining lifetiming from IADLXInterface
-    //         self.0.cast(),
-    //         ret.as_mut_ptr(),
-    //     );
+    //     let result = unsafe {
+    //         (self.vtable().GetPowerTuningServices.unwrap())(self.imp(), ret.as_mut_ptr())
+    //     };
     //     let ret = Error::from_result_with_assume_init_on_success(result, ret)?;
     //     Ok(PowerTuningServices::from_raw(ret))
     // }
