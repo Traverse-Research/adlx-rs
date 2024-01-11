@@ -25,8 +25,8 @@ impl PerformanceMonitoringServices {
         let mut metrics = MaybeUninit::uninit();
         let result = unsafe {
             (self.vtable().GetCurrentGPUMetrics.unwrap())(
-                self.imp(),
-                gpu.imp(),
+                self.as_raw(),
+                gpu.as_raw(),
                 metrics.as_mut_ptr(),
             )
         };

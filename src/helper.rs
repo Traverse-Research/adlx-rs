@@ -12,7 +12,6 @@ const HEADER_VERSION: u64 = ((ffi::ADLX_VER_MAJOR as u64) << 48)
     | (ffi::ADLX_VER_BUILD_NUM as u64);
 
 // TODO: This should be a singleton
-
 struct AdlxFunctions {
     _lib: libloading::Library,
 

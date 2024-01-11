@@ -31,7 +31,7 @@ pub unsafe trait Interface: Sized {
     /// In other words, `T::Vtable` must be equivalent to the beginning of [`Self::Vtable`].
     #[doc(hidden)]
     unsafe fn assume_vtable<T: Interface>(&self) -> &T::Vtable {
-        let base_vtable = (*self.imp().cast::<ffi::IADLXInterface>()).pVtbl;
+        let base_vtable = (*self.as_raw().cast::<ffi::IADLXInterface>()).pVtbl;
         &*<*const _>::cast(base_vtable)
     }
 
@@ -46,9 +46,20 @@ pub unsafe trait Interface: Sized {
         std::mem::transmute_copy(&raw)
     }
 
+    /// Returns the raw COM/ADLX interface pointer and abandons ownership. It the caller's
+    /// responsibility to release the COM/ADLX interface pointer.
+    fn into_raw(self) -> *mut Self::Impl {
+        // SAFETY: implementors of this trait must guarantee that the implementing type has a pointer in-memory representation
+        let raw = self.as_raw();
+        std::mem::forget(self);
+        raw
+    }
+
+    /// Returns the raw COM/ADLX interface pointer. The resulting pointer continues to be owned by
+    /// the [`Interface`] implementation.
     // TODO: With a generic on `InterfaceImpl` trait implementers (via derive-macro-generated
     // implementation) could provide their type-safe pointer value
-    fn imp(&self) -> *mut Self::Impl {
+    fn as_raw(&self) -> *mut Self::Impl {
         unsafe { std::mem::transmute_copy(self) }
     }
 
@@ -68,7 +79,7 @@ pub unsafe trait Interface: Sized {
 /// vtable in [`Interface::Vtable`].
 ///
 /// Owning this type means proper [`Drop`] and [`Clone`] semantics, and less manual conversions like
-/// e.g. [`Interface::imp()`].
+/// e.g. [`Interface::as_raw()`].
 // TODO(Marijn): We could also achieve that by creating a little macro that provides the conversions, while being more type-safe!
 #[derive(Debug)]
 #[repr(transparent)]
