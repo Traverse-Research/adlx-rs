@@ -35,22 +35,14 @@ impl AdlxFunctions {
             Ok(sym)
         }
 
-        let full_version_fn: ffi::ADLXQueryFullVersion_Fn = load_symbol(
-            &lib,
-            ffi::ADLX_QUERY_FULL_VERSION_FUNCTION_NAME,
-        )?;
-        let version_fn: ffi::ADLXQueryVersion_Fn = load_symbol(
-            &lib,
-            ffi::ADLX_QUERY_VERSION_FUNCTION_NAME,
-        )?;
-        let init_with_adl_fn: ffi::ADLXInitializeWithCallerAdl_Fn = load_symbol(
-            &lib,
-            ffi::ADLX_INIT_WITH_CALLER_ADL_FUNCTION_NAME,
-        )?;
-        let init_with_incompatible_driver_fn: ffi::ADLXInitialize_Fn = load_symbol(
-            &lib,
-            ffi::ADLX_INIT_WITH_INCOMPATIBLE_DRIVER_FUNCTION_NAME,
-        )?;
+        let full_version_fn: ffi::ADLXQueryFullVersion_Fn =
+            load_symbol(&lib, ffi::ADLX_QUERY_FULL_VERSION_FUNCTION_NAME)?;
+        let version_fn: ffi::ADLXQueryVersion_Fn =
+            load_symbol(&lib, ffi::ADLX_QUERY_VERSION_FUNCTION_NAME)?;
+        let init_with_adl_fn: ffi::ADLXInitializeWithCallerAdl_Fn =
+            load_symbol(&lib, ffi::ADLX_INIT_WITH_CALLER_ADL_FUNCTION_NAME)?;
+        let init_with_incompatible_driver_fn: ffi::ADLXInitialize_Fn =
+            load_symbol(&lib, ffi::ADLX_INIT_WITH_INCOMPATIBLE_DRIVER_FUNCTION_NAME)?;
         let init_fn: ffi::ADLXInitialize_Fn = load_symbol(&lib, ffi::ADLX_INIT_FUNCTION_NAME)?;
         let terminate_fn: ffi::ADLXTerminate_Fn =
             load_symbol(&lib, ffi::ADLX_TERMINATE_FUNCTION_NAME)?;

@@ -41,8 +41,9 @@ impl System {
     pub fn get_gpus(&self) -> Result<GpuList> {
         let mut gpu_list = MaybeUninit::uninit();
         let result = unsafe { (self.vtable().GetGPUs.unwrap())(self.0, gpu_list.as_mut_ptr()) };
-        Error::from_result_with_assume_init_on_success(result, gpu_list)
-            .map(|gpu_list| unsafe { GpuList::from_raw(gpu_list) })
+        todo!("MARIIIIJN")
+        // Error::from_result_with_assume_init_on_success(result, gpu_list)
+        //     .map(|gpu_list| unsafe { GpuList::from_raw(gpu_list) })
     }
     #[doc(alias = "QueryInterface")]
     pub fn cast<I: Interface>(&self) -> Result<I> {

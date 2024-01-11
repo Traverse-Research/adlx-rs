@@ -1,10 +1,10 @@
 use std::{ffi::CStr, mem::MaybeUninit};
 
-use crate::bindings as ffi;
 use super::{
-    result::{Error, Result},
     interface::{ADLXInterface, Interface},
+    result::{Error, Result},
 };
+use crate::bindings as ffi;
 
 // TODO: Don't derive Clone
 #[derive(Clone, Debug)]
@@ -14,7 +14,7 @@ pub struct Gpu(ADLXInterface);
 
 unsafe impl Interface for Gpu {
     type Vtable = ffi::IADLXGPUVtbl;
-    const IID: &'static str = "IADLXGPU";    
+    const IID: &'static str = "IADLXGPU";
 }
 
 impl Gpu {
