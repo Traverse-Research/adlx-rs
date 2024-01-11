@@ -3,6 +3,7 @@ use std::mem::MaybeUninit;
 use crate::bindings::{self as ffi, IADLXInterface};
 
 use super::{
+    gpu_list::GpuList,
     interface::Interface,
     result::{Error, Result},
 };
@@ -36,14 +37,13 @@ impl System {
             unsafe { (self.vtable().GetHybridGraphicsType.unwrap())(self.0, type_.as_mut_ptr()) };
         Error::from_result_with_assume_init_on_success(result, type_)
     }
-    // #[doc(alias = "GetGPUs")]
-    // pub fn GetGPUs(&self) -> Result<()> {
-    //     let result = unsafe { (self.vtable().GetGPUs.unwrap())(self.0) };
-    //     Error::from_result(result)?;
-
-    //     Ok(())
-    // }
-    /// Gets reference counted extension interfaces to [`System`], e.g. [`System1`].
+    #[doc(alias = "GetGPUs")]
+    pub fn get_gpus(&self) -> Result<GpuList> {
+        let mut gpu_list = MaybeUninit::uninit();
+        let result = unsafe { (self.vtable().GetGPUs.unwrap())(self.0, gpu_list.as_mut_ptr()) };
+        Error::from_result_with_assume_init_on_success(result, gpu_list)
+            .map(|gpu_list| unsafe { GpuList::from_raw(gpu_list) })
+    }
     #[doc(alias = "QueryInterface")]
     pub fn cast<I: Interface>(&self) -> Result<I> {
         let interface_name = I::IID

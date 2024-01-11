@@ -8,12 +8,12 @@ use crate::bindings as ffi;
 // TODO: This should be a singleton
 
 struct AdlxFunctions {
-    lib: libloading::Library,
+    _lib: libloading::Library,
 
     full_version_fn: ffi::ADLXQueryFullVersion_Fn,
     version_fn: ffi::ADLXQueryVersion_Fn,
-    init_with_adl_fn: ffi::ADLXInitializeWithCallerAdl_Fn,
-    init_with_incompatible_driver_fn: ffi::ADLXInitialize_Fn,
+    _init_with_adl_fn: ffi::ADLXInitializeWithCallerAdl_Fn,
+    _init_with_incompatible_driver_fn: ffi::ADLXInitialize_Fn,
     init_fn: ffi::ADLXInitialize_Fn,
     terminate_fn: ffi::ADLXTerminate_Fn,
 }
@@ -56,12 +56,12 @@ impl AdlxFunctions {
             load_symbol(&lib, ffi::ADLX_TERMINATE_FUNCTION_NAME)?;
 
         Ok(Self {
-            lib,
+            _lib: lib,
 
             full_version_fn,
             version_fn,
-            init_with_adl_fn,
-            init_with_incompatible_driver_fn,
+            _init_with_adl_fn: init_with_adl_fn,
+            _init_with_incompatible_driver_fn: init_with_incompatible_driver_fn,
             init_fn,
             terminate_fn,
         })
@@ -117,6 +117,14 @@ impl AdlxHelper {
 
     pub fn system(&self) -> &System {
         &self.system
+    }
+
+    pub fn full_version(&self) -> u64 {
+        self.full_version
+    }
+
+    pub fn version(&self) -> &str {
+        &self.version
     }
 }
 
