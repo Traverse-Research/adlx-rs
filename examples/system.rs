@@ -14,7 +14,7 @@ fn main() -> Result<()> {
     let gpu_count = gpu_list.size();
     for i in 0..gpu_count {
         let gpu = gpu_list.gpu_at(i)?;
-        println!("\nGPU #{}: {}", i, gpu.name()?)
+        println!("GPU #{}: {}", i, gpu.name()?)
     }
 
     Ok(())
