@@ -1,17 +1,16 @@
 use std::mem::MaybeUninit;
 
 use super::{
+    ffi,
     gpu::Gpu,
     gpu_metrics::GpuMetrics,
     interface::{Interface, InterfaceImpl},
     result::{Error, Result},
 };
-use crate::bindings as ffi;
 
-// TODO: Don't derive Clone
 #[derive(Clone, Debug)]
-#[doc(alias = "IADLXPerformanceMonitoringServices")]
 #[repr(transparent)]
+#[doc(alias = "IADLXPerformanceMonitoringServices")]
 pub struct PerformanceMonitoringServices(InterfaceImpl);
 
 unsafe impl Interface for PerformanceMonitoringServices {

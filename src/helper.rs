@@ -2,8 +2,7 @@ use std::{ffi::CStr, mem::MaybeUninit};
 
 use anyhow::{ensure, Context, Result};
 
-use super::{result::Error, system::System};
-use crate::bindings as ffi;
+use super::{ffi, result::Error, system::System};
 
 // Taken from ADLXDefines.h.
 // Refer to ADLX_MAKE_FULL_VERSION and ADLX_FULL_VERSION.
@@ -31,7 +30,8 @@ impl AdlxFunctions {
             .unwrap()
             .to_str()
             .unwrap();
-        let lib = libloading::Library::new(dll_name).context("Failed to load amdadlx DLL")?;
+        let lib = libloading::Library::new(dll_name)
+            .with_context(|| format!("Failed to load `{dll_name}`"))?;
 
         fn load_symbol<T: Copy>(lib: &libloading::Library, name: &[u8]) -> Result<Option<T>> {
             let name_c = CStr::from_bytes_with_nul(name)?;

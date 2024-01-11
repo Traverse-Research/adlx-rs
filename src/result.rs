@@ -1,6 +1,6 @@
 use std::{fmt, mem::MaybeUninit};
 
-use crate::bindings as ffi;
+use super::ffi;
 
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 

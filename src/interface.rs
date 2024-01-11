@@ -1,6 +1,9 @@
 //! `ADLX` interfaces look identical to COM objects.
 
-use crate::bindings as ffi;
+use super::{
+    ffi,
+    result::{Error, Result},
+};
 
 /// # Safety
 /// All `unsafe` implementers of this trait should guarantee [`ffi::IADLXInterface`] is the base
@@ -48,8 +51,18 @@ pub unsafe trait Interface: Sized {
     fn imp(&self) -> *mut Self::Impl {
         unsafe { std::mem::transmute_copy(self) }
     }
+
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_interface__query_interface/>
+    // TODO(Marijn): Or deref every interface to `InterfaceImpl`, per a true interface hierarchy?
+    #[doc(alias = "QueryInterface")]
+    fn cast<I: Interface>(&self) -> Result<I> {
+        let interface: InterfaceImpl = unsafe { std::mem::transmute_copy(self) };
+        interface.cast()
+    }
 }
 
+/// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_interface/>
+///
 /// All `IADLX*` types are expected to own this object, and access the vtable by implementing
 /// [`Interface`] with the appropriate owning type set in [`Interface::Impl`] and corresponding
 /// vtable in [`Interface::Vtable`].
@@ -68,13 +81,38 @@ unsafe impl Interface for InterfaceImpl {
     const IID: &'static str = "IADLXInterface";
 }
 
+impl InterfaceImpl {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_interface__query_interface/>
+    #[doc(alias = "QueryInterface")]
+    pub fn cast<I: Interface>(&self) -> Result<I> {
+        let interface_name = I::IID
+            // TODO: Use windows-rs' helpers to create static wchars?
+            .encode_utf16()
+            .chain(std::iter::once(0u16))
+            .collect::<Vec<_>>();
+        let mut interface = std::mem::MaybeUninit::uninit();
+        let result = unsafe {
+            (self.vtable().QueryInterface.unwrap())(
+                self.0,
+                interface_name.as_ptr(),
+                interface.as_mut_ptr(),
+            )
+        };
+        Error::from_result(result).map(|()| unsafe { I::from_raw(interface.assume_init().cast()) })
+    }
+}
+
 impl Drop for InterfaceImpl {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_interface__release/>
+    #[doc(alias = "Release")]
     fn drop(&mut self) {
         let _rc = unsafe { (self.vtable().Release.unwrap())(self.0) };
     }
 }
 
 impl Clone for InterfaceImpl {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_interface__acquire/>
+    #[doc(alias = "Acquire")]
     fn clone(&self) -> Self {
         let _rc = unsafe { (self.vtable().Acquire.unwrap())(self.0) };
         Self(self.0)

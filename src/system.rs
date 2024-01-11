@@ -1,13 +1,15 @@
 use std::mem::MaybeUninit;
 
 use super::{
+    ffi,
     gpu_list::GpuList,
     interface::{Interface, InterfaceImpl},
     performance_monitoring_services::PerformanceMonitoringServices,
     result::{Error, Result},
 };
-use crate::bindings as ffi;
 
+/// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_system/>
+///
 /// [`System`] is a singleton interface.  It looks similar to but is not compatible with
 /// [`Interface`].
 #[derive(Debug)]
@@ -16,12 +18,13 @@ use crate::bindings as ffi;
 pub struct System(*mut ffi::IADLXSystem);
 
 impl System {
-    /// Creates an `Interface` by taking ownership of the `raw` COM interface pointer.
+    /// Creates an [`Interface`] by taking ownership of the `raw` COM/ADLX interface pointer.
     ///
     /// # Safety
     ///
-    /// The `raw` pointer must be owned by the caller and represent a valid COM interface pointer. In other words,
-    /// it must point to a vtable beginning with the `IUnknown` function pointers and match the vtable of `Interface`.
+    /// The `raw` pointer must be owned by the caller and represent a valid [`ffi::IADLXSystem`]
+    /// pointer. In other words, it must point to a vtable beginning with the
+    /// [`ffi::IADLXSystemVtbl`] function pointers.
     pub(crate) unsafe fn from_raw(raw: *mut ffi::IADLXSystem) -> Self {
         Self(raw)
     }
@@ -30,6 +33,7 @@ impl System {
         unsafe { &*(*self.0).pVtbl }
     }
 
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_system__hybrid_graphics_type/>
     #[doc(alias = "GetHybridGraphicsType")]
     pub fn hybrid_graphics_type(&self) -> Result<ffi::ADLX_HG_TYPE> {
         let mut type_ = MaybeUninit::uninit();
@@ -37,12 +41,31 @@ impl System {
             unsafe { (self.vtable().GetHybridGraphicsType.unwrap())(self.0, type_.as_mut_ptr()) };
         Error::from_result_with_assume_init_on_success(result, type_)
     }
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_system__get_g_p_us/>
     #[doc(alias = "GetGPUs")]
-    pub fn get_gpus(&self) -> Result<GpuList> {
+    pub fn gpus(&self) -> Result<GpuList> {
         let mut gpu_list = MaybeUninit::uninit();
         let result = unsafe { (self.vtable().GetGPUs.unwrap())(self.0, gpu_list.as_mut_ptr()) };
         Error::from_result_with_assume_init_on_success(result, gpu_list)
             .map(|gpu_list| unsafe { GpuList::from_raw(gpu_list) })
+    }
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_system__query_interface/>
+    #[doc(alias = "QueryInterface")]
+    pub fn cast<I: Interface>(&self) -> Result<I> {
+        let interface_name = I::IID
+            // TODO: Use windows-rs' helpers to create static wchars?
+            .encode_utf16()
+            .chain(std::iter::once(0u16))
+            .collect::<Vec<_>>();
+        let mut interface = std::mem::MaybeUninit::uninit();
+        let result = unsafe {
+            (self.vtable().QueryInterface.unwrap())(
+                self.0,
+                interface_name.as_ptr(),
+                interface.as_mut_ptr(),
+            )
+        };
+        Error::from_result(result).map(|()| unsafe { I::from_raw(interface.assume_init().cast()) })
     }
     // #[doc(alias = "GetDisplaysServices")]
     // pub fn GetDisplaysServices(&self) -> Result<()> {
@@ -109,25 +132,9 @@ impl System {
 
     //     Ok(())
     // }
-    #[doc(alias = "QueryInterface")]
-    pub fn cast<I: Interface>(&self) -> Result<I> {
-        let interface_name = I::IID
-            // TODO: Use windows-rs' helpers to create static wchars?
-            .encode_utf16()
-            .chain(std::iter::once(0u16))
-            .collect::<Vec<_>>();
-        let mut interface = std::mem::MaybeUninit::uninit();
-        let result = unsafe {
-            (self.vtable().QueryInterface.unwrap())(
-                self.0,
-                interface_name.as_ptr(),
-                interface.as_mut_ptr(),
-            )
-        };
-        Error::from_result(result).map(|()| unsafe { I::from_raw(interface.assume_init().cast()) })
-    }
 }
 
+/// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_system1/>
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXSystem1")]
@@ -140,6 +147,7 @@ unsafe impl Interface for System1 {
 }
 
 impl System1 {
+    // /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_system1__get_power_tuning_services/>
     // #[doc(alias = "GetPowerTuningServices")]
     // pub fn power_tuning_services(&self) -> Result<PowerTuningServices> {
     //     let mut ret = MaybeUninit::uninit();

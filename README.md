@@ -18,9 +18,27 @@ Add this to your Cargo.toml:
 
 ```toml
 [dependencies]
-adlx-rs = "0.0.0"
+adlx = "0.0.0"
 ```
 
+## Code example
+
 ```rust
-// A code example
+use adlx::{gpu::Gpu1, helper::AdlxHelper, interface::Interface};
+use anyhow::Result;
+
+fn main() -> Result<()> {
+    let helper = AdlxHelper::new()?;
+    let system = helper.system();
+    let gpu_list = system.gpus()?;
+
+    for gpu in 0..gpu_list.size() {
+        let gpu = gpu_list.at(gpu)?;
+        let gpu1 = gpu.cast::<Gpu1>()?;
+        dbg!(gpu1.name()?);
+        dbg!(gpu1.product_name()?);
+    }
+
+    Ok(())
+}
 ```

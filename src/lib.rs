@@ -1,8 +1,12 @@
 #![doc = include_str!("../README.md")]
 
-// TODO: More-higher-level wrappers around adlx here?
-pub mod adlx;
-// TODO: Move
-pub mod bindings;
+pub mod ffi;
 
-pub use adlx::*;
+pub mod gpu;
+pub mod gpu_list;
+pub mod gpu_metrics;
+pub mod helper;
+pub mod interface;
+pub mod performance_monitoring_services;
+pub mod result;
+pub mod system;

@@ -1,17 +1,17 @@
 use std::mem::MaybeUninit;
 
-use crate::bindings as ffi;
-
 use super::{
+    ffi,
     gpu::Gpu,
     interface::{Interface, InterfaceImpl},
     result::{Error, Result},
 };
 
-// TODO: Don't derive Clone
+/// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list/>
 #[derive(Debug)]
-#[doc(alias = "IADLXGPUList")]
 #[repr(transparent)]
+#[doc(alias = "IADLXGPUList")]
+// TODO(Marijn): This type inherits IADLXList; we should model inheritance!
 pub struct GpuList(InterfaceImpl);
 
 unsafe impl Interface for GpuList {
@@ -21,12 +21,14 @@ unsafe impl Interface for GpuList {
 }
 
 impl GpuList {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_list__size/#doxid-d-o-x-i-a-d-l-x-list-size>
     #[doc(alias = "Size")]
     pub fn size(&self) -> u32 {
         unsafe { (self.vtable().Size.unwrap())(self.imp()) }
     }
 
-    #[doc(alias = "GpuAt")]
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list__at/>
+    #[doc(alias = "At_GPUList")]
     pub fn gpu_at(&self, location: u32) -> Result<Gpu> {
         let mut gpu = MaybeUninit::uninit();
         let result =
