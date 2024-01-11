@@ -15,12 +15,12 @@ const HEADER_VERSION: u64 = ((ffi::ADLX_VER_MAJOR as u64) << 48)
 // TODO: This should be a singleton
 
 struct AdlxFunctions {
-    lib: libloading::Library,
+    _lib: libloading::Library,
 
     full_version_fn: ffi::ADLXQueryFullVersion_Fn,
     version_fn: ffi::ADLXQueryVersion_Fn,
-    init_with_adl_fn: ffi::ADLXInitializeWithCallerAdl_Fn,
-    init_with_incompatible_driver_fn: ffi::ADLXInitialize_Fn,
+    _init_with_adl_fn: ffi::ADLXInitializeWithCallerAdl_Fn,
+    _init_with_incompatible_driver_fn: ffi::ADLXInitialize_Fn,
     init_fn: ffi::ADLXInitialize_Fn,
     terminate_fn: ffi::ADLXTerminate_Fn,
 }
@@ -42,33 +42,25 @@ impl AdlxFunctions {
             Ok(sym)
         }
 
-        let full_version_fn: ffi::ADLXQueryFullVersion_Fn = load_symbol(
-            &lib,
-            ffi::ADLX_QUERY_FULL_VERSION_FUNCTION_NAME,
-        )?;
-        let version_fn: ffi::ADLXQueryVersion_Fn = load_symbol(
-            &lib,
-            ffi::ADLX_QUERY_VERSION_FUNCTION_NAME,
-        )?;
-        let init_with_adl_fn: ffi::ADLXInitializeWithCallerAdl_Fn = load_symbol(
-            &lib,
-            ffi::ADLX_INIT_WITH_CALLER_ADL_FUNCTION_NAME,
-        )?;
-        let init_with_incompatible_driver_fn: ffi::ADLXInitialize_Fn = load_symbol(
-            &lib,
-            ffi::ADLX_INIT_WITH_INCOMPATIBLE_DRIVER_FUNCTION_NAME,
-        )?;
+        let full_version_fn: ffi::ADLXQueryFullVersion_Fn =
+            load_symbol(&lib, ffi::ADLX_QUERY_FULL_VERSION_FUNCTION_NAME)?;
+        let version_fn: ffi::ADLXQueryVersion_Fn =
+            load_symbol(&lib, ffi::ADLX_QUERY_VERSION_FUNCTION_NAME)?;
+        let init_with_adl_fn: ffi::ADLXInitializeWithCallerAdl_Fn =
+            load_symbol(&lib, ffi::ADLX_INIT_WITH_CALLER_ADL_FUNCTION_NAME)?;
+        let init_with_incompatible_driver_fn: ffi::ADLXInitialize_Fn =
+            load_symbol(&lib, ffi::ADLX_INIT_WITH_INCOMPATIBLE_DRIVER_FUNCTION_NAME)?;
         let init_fn: ffi::ADLXInitialize_Fn = load_symbol(&lib, ffi::ADLX_INIT_FUNCTION_NAME)?;
         let terminate_fn: ffi::ADLXTerminate_Fn =
             load_symbol(&lib, ffi::ADLX_TERMINATE_FUNCTION_NAME)?;
 
         Ok(Self {
-            lib,
+            _lib: lib,
 
             full_version_fn,
             version_fn,
-            init_with_adl_fn,
-            init_with_incompatible_driver_fn,
+            _init_with_adl_fn: init_with_adl_fn,
+            _init_with_incompatible_driver_fn: init_with_incompatible_driver_fn,
             init_fn,
             terminate_fn,
         })
@@ -98,14 +90,15 @@ impl AdlxHelper {
         let version = unsafe {
             let mut version = MaybeUninit::uninit();
             let result = (functions.version_fn.unwrap())(version.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(result, version).map(|version| CStr::from_ptr(version).to_str().unwrap().to_string())?            
+            Error::from_result_with_assume_init_on_success(result, version)
+                .map(|version| CStr::from_ptr(version).to_str().unwrap().to_string())?
         };
 
         // TODO: C++ helper does extra things if an ADL context is provided.
         // We don't support this currently because we are only implementing ADLX
         let system = unsafe {
             let mut system = std::ptr::null_mut();
-            
+
             Error::from_result((functions.init_fn.unwrap())(HEADER_VERSION, &mut system))?;
 
             System::from_raw(system)
@@ -122,6 +115,14 @@ impl AdlxHelper {
 
     pub fn system(&self) -> &System {
         &self.system
+    }
+
+    pub fn full_version(&self) -> u64 {
+        self.full_version
+    }
+
+    pub fn version(&self) -> &str {
+        &self.version
     }
 }
 

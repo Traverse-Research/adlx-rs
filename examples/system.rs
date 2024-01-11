@@ -10,5 +10,12 @@ fn main() -> Result<()> {
     dbg!(system);
     let _ = dbg!(system.hybrid_graphics_type());
 
+    let gpu_list = system.get_gpus()?;
+    let gpu_count = gpu_list.size();
+    for i in 0..gpu_count {
+        let gpu = gpu_list.gpu_at(i)?;
+        println!("GPU #{}: {}", i, gpu.name()?)
+    }
+
     Ok(())
 }
