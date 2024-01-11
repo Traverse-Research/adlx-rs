@@ -3,6 +3,7 @@ use std::mem::MaybeUninit;
 use super::{
     gpu_list::GpuList,
     interface::{Interface, InterfaceImpl},
+    performance_monitoring_services::PerformanceMonitoringServices,
     result::{Error, Result},
 };
 use crate::bindings as ffi;
@@ -42,23 +43,6 @@ impl System {
         let result = unsafe { (self.vtable().GetGPUs.unwrap())(self.0, gpu_list.as_mut_ptr()) };
         Error::from_result_with_assume_init_on_success(result, gpu_list)
             .map(|gpu_list| unsafe { GpuList::from_raw(gpu_list) })
-    }
-    #[doc(alias = "QueryInterface")]
-    pub fn cast<I: Interface>(&self) -> Result<I> {
-        let interface_name = I::IID
-            // TODO: Use windows-rs' helpers to create static wchars?
-            .encode_utf16()
-            .chain(std::iter::once(0u16))
-            .collect::<Vec<_>>();
-        let mut interface = std::mem::MaybeUninit::uninit();
-        let result = unsafe {
-            (self.vtable().QueryInterface.unwrap())(
-                self.0,
-                interface_name.as_ptr(),
-                interface.as_mut_ptr(),
-            )
-        };
-        Error::from_result(result).map(|()| unsafe { I::from_raw(interface.assume_init().cast()) })
     }
     // #[doc(alias = "GetDisplaysServices")]
     // pub fn GetDisplaysServices(&self) -> Result<()> {
@@ -102,13 +86,15 @@ impl System {
 
     //     Ok(())
     // }
-    // #[doc(alias = "GetPerformanceMonitoringServices")]
-    // pub fn GetPerformanceMonitoringServices(&self) -> Result<()> {
-    //     let result = unsafe { (self.vtable().GetPerformanceMonitoringServices.unwrap())(self.0) };
-    //     Error::from_result(result)?;
-
-    //     Ok(())
-    // }
+    #[doc(alias = "GetPerformanceMonitoringServices")]
+    pub fn performance_monitoring_services(&self) -> Result<PerformanceMonitoringServices> {
+        let mut services = MaybeUninit::uninit();
+        let result = unsafe {
+            (self.vtable().GetPerformanceMonitoringServices.unwrap())(self.0, services.as_mut_ptr())
+        };
+        Error::from_result_with_assume_init_on_success(result, services)
+            .map(|services| unsafe { PerformanceMonitoringServices::from_raw(services) })
+    }
     // #[doc(alias = "TotalSystemRAM")]
     // pub fn TotalSystemRAM(&self) -> Result<()> {
     //     let result = unsafe { (self.vtable().TotalSystemRAM.unwrap())(self.0) };
@@ -123,6 +109,23 @@ impl System {
 
     //     Ok(())
     // }
+    #[doc(alias = "QueryInterface")]
+    pub fn cast<I: Interface>(&self) -> Result<I> {
+        let interface_name = I::IID
+            // TODO: Use windows-rs' helpers to create static wchars?
+            .encode_utf16()
+            .chain(std::iter::once(0u16))
+            .collect::<Vec<_>>();
+        let mut interface = std::mem::MaybeUninit::uninit();
+        let result = unsafe {
+            (self.vtable().QueryInterface.unwrap())(
+                self.0,
+                interface_name.as_ptr(),
+                interface.as_mut_ptr(),
+            )
+        };
+        Error::from_result(result).map(|()| unsafe { I::from_raw(interface.assume_init().cast()) })
+    }
 }
 
 #[derive(Clone, Debug)]
