@@ -46,7 +46,7 @@ pub unsafe trait Interface: Sized {
         std::mem::transmute_copy(&raw)
     }
 
-    /// Returns the raw COM/ADLX interface pointer and abandons ownership. It the caller's
+    /// Returns the raw COM/ADLX interface pointer and abandons ownership. It is the caller's
     /// responsibility to release the COM/ADLX interface pointer.
     fn into_raw(self) -> *mut Self::Impl {
         // SAFETY: implementors of this trait must guarantee that the implementing type has a pointer in-memory representation
