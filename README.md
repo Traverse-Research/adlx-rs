@@ -23,7 +23,7 @@ adlx = "0.0.0"
 
 ## Code example
 
-```rust
+```rust,no_run
 use adlx::{gpu::Gpu1, helper::AdlxHelper, interface::Interface};
 use anyhow::Result;
 
