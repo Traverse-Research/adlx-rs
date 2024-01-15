@@ -1,5 +1,7 @@
 use std::mem::MaybeUninit;
 
+use crate::list::List;
+
 use super::{
     ffi,
     interface::{Interface, InterfaceImpl},
@@ -143,6 +145,43 @@ impl GpuMetrics {
 
 #[derive(Clone, Debug)]
 #[repr(transparent)]
+#[doc(alias = "IADLXGPUMetricsList")]
+pub struct GpuMetricsList(List);
+
+unsafe impl Interface for GpuMetricsList {
+    type Impl = ffi::IADLXGPUMetricsList;
+    type Vtable = ffi::IADLXGPUMetricsListVtbl;
+    const IID: &'static str = "IADLXGpuMetricsList";
+}
+
+impl GpuMetricsList {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list__at/>
+    #[doc(alias = "At_GPUMetricsList")]
+    pub fn at(&self, location: u32) -> Result<GpuMetrics> {
+        let mut metrics = MaybeUninit::uninit();
+        let result = unsafe {
+            (self.vtable().At_GPUMetricsList.unwrap())(
+                self.as_raw(),
+                location,
+                metrics.as_mut_ptr(),
+            )
+        };
+        Error::from_result_with_assume_init_on_success(result, metrics)
+            .map(|metrics| unsafe { GpuMetrics::from_raw(metrics) })
+    }
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list__add__back/#doxid-d-o-x-i-a-d-l-x-g-p-u-list-add-back>
+    #[doc(alias = "Add_Back_GPUMetricsList")]
+    pub fn add_back(&self, gpu_metrics: GpuMetrics) -> Result<()> {
+        let result = unsafe {
+            // TODO: Assume ownership is consumed here?
+            (self.vtable().Add_Back_GPUMetricsList.unwrap())(self.as_raw(), gpu_metrics.into_raw())
+        };
+        Error::from_result(result)
+    }
+}
+
+#[derive(Clone, Debug)]
+#[repr(transparent)]
 #[doc(alias = "IADLXGPUMetricsSupport")]
 pub struct GpuMetricsSupport(InterfaceImpl);
 
@@ -157,88 +196,126 @@ impl GpuMetricsSupport {
     pub fn is_supported_gpu_usage(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUUsage.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res =
+                (self.vtable().IsSupportedGPUUsage.unwrap())(self.as_raw(), supported.as_mut_ptr());
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
     #[doc(alias = "IsSupportedGPUClockSpeed")]
     pub fn is_supported_gpu_clock_speed(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUClockSpeed.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res = (self.vtable().IsSupportedGPUClockSpeed.unwrap())(
+                self.as_raw(),
+                supported.as_mut_ptr(),
+            );
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
     #[doc(alias = "IsSupportedGPUVRAMClockSpeed")]
     pub fn is_supported_gpu_vram_clock_speed(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUVRAMClockSpeed.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res = (self.vtable().IsSupportedGPUVRAMClockSpeed.unwrap())(
+                self.as_raw(),
+                supported.as_mut_ptr(),
+            );
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
     #[doc(alias = "IsSupportedGPUTemperature")]
     pub fn is_supported_gpu_temperature(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUTemperature.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res = (self.vtable().IsSupportedGPUTemperature.unwrap())(
+                self.as_raw(),
+                supported.as_mut_ptr(),
+            );
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
     #[doc(alias = "IsSupportedGPUHotspotTemperature")]
     pub fn is_supported_gpu_hotspot_temperature(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUHotspotTemperature.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res = (self.vtable().IsSupportedGPUHotspotTemperature.unwrap())(
+                self.as_raw(),
+                supported.as_mut_ptr(),
+            );
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
     #[doc(alias = "IsSupportedGPUPower")]
     pub fn is_supported_gpu_power(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUPower.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res =
+                (self.vtable().IsSupportedGPUPower.unwrap())(self.as_raw(), supported.as_mut_ptr());
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
     #[doc(alias = "IsSupportedGPUTotalBoardPower")]
     pub fn is_supported_gpu_total_board_power(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUTotalBoardPower.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res = (self.vtable().IsSupportedGPUTotalBoardPower.unwrap())(
+                self.as_raw(),
+                supported.as_mut_ptr(),
+            );
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
     #[doc(alias = "IsSupportedGPUFanSpeed")]
     pub fn is_supported_gpu_fan_speed(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUFanSpeed.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res = (self.vtable().IsSupportedGPUFanSpeed.unwrap())(
+                self.as_raw(),
+                supported.as_mut_ptr(),
+            );
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
     #[doc(alias = "IsSupportedGPUVRAM")]
     pub fn is_supported_gpu_vram(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUVRAM.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res =
+                (self.vtable().IsSupportedGPUVRAM.unwrap())(self.as_raw(), supported.as_mut_ptr());
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
     #[doc(alias = "IsSupportedGPUVoltage")]
     pub fn is_supported_gpu_voltage(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUVoltage.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res = (self.vtable().IsSupportedGPUVoltage.unwrap())(
+                self.as_raw(),
+                supported.as_mut_ptr(),
+            );
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
     #[doc(alias = "IsSupportedGPUIntakeTemperature")]
     pub fn is_supported_gpu_intake_temperature(&self) -> Result<bool> {
         unsafe {
             let mut supported = MaybeUninit::uninit();
-            let res = (self.vtable().IsSupportedGPUIntakeTemperature.unwrap())(self.as_raw(), supported.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(res, supported).map(|supported| supported != 0)
+            let res = (self.vtable().IsSupportedGPUIntakeTemperature.unwrap())(
+                self.as_raw(),
+                supported.as_mut_ptr(),
+            );
+            Error::from_result_with_assume_init_on_success(res, supported)
+                .map(|supported| supported != 0)
         }
     }
 
@@ -247,7 +324,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUUsageRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUUsageRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();
@@ -260,7 +341,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUClockSpeedRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUClockSpeedRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();
@@ -273,7 +358,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUVRAMClockSpeedRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUVRAMClockSpeedRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();
@@ -286,7 +375,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUTemperatureRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUTemperatureRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();
@@ -299,7 +392,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUHotspotTemperatureRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUHotspotTemperatureRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();
@@ -312,7 +409,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUPowerRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUPowerRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();
@@ -325,7 +426,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUFanSpeedRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUFanSpeedRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();
@@ -338,7 +443,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUVRAMRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUVRAMRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();
@@ -351,7 +460,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUVoltageRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUVoltageRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();
@@ -364,7 +477,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUTotalBoardPowerRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUTotalBoardPowerRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();
@@ -377,7 +494,11 @@ impl GpuMetricsSupport {
         unsafe {
             let mut min = MaybeUninit::uninit();
             let mut max = MaybeUninit::uninit();
-            let res = (self.vtable().GetGPUIntakeTemperatureRange.unwrap())(self.as_raw(), min.as_mut_ptr(), max.as_mut_ptr());
+            let res = (self.vtable().GetGPUIntakeTemperatureRange.unwrap())(
+                self.as_raw(),
+                min.as_mut_ptr(),
+                max.as_mut_ptr(),
+            );
             Error::from_result(res).map(|()| {
                 let min = min.assume_init();
                 let max = max.assume_init();

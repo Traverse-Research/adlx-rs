@@ -4,7 +4,7 @@ use super::{
 };
 
 /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_list/>
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXList")]
 pub struct List(InterfaceImpl);
