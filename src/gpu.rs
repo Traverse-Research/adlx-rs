@@ -63,63 +63,63 @@ impl Gpu {
     // #[doc(alias = "DriverPath")]
     // pub fn DriverPath(&self) -> Result<()> {
     //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().DriverPath.unwrap())(self.imp(), x.as_mut_ptr()) };
+    //     let result = unsafe { (self.vtable().DriverPath.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
     //     Error::from_result_with_assume_init_on_success(result, x)
     // }
     // #[doc(alias = "PNPString")]
     // pub fn PNPString(&self) -> Result<()> {
     //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().PNPString.unwrap())(self.imp(), x.as_mut_ptr()) };
+    //     let result = unsafe { (self.vtable().PNPString.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
     //     Error::from_result_with_assume_init_on_success(result, x)
     // }
     // #[doc(alias = "HasDesktops")]
     // pub fn HasDesktops(&self) -> Result<()> {
     //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().HasDesktops.unwrap())(self.imp(), x.as_mut_ptr()) };
+    //     let result = unsafe { (self.vtable().HasDesktops.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
     //     Error::from_result_with_assume_init_on_success(result, x)
     // }
-    // #[doc(alias = "TotalVRAM")]
-    // pub fn TotalVRAM(&self) -> Result<()> {
-    //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().TotalVRAM.unwrap())(self.imp(), x.as_mut_ptr()) };
+    #[doc(alias = "TotalVRAM")]
+    pub fn total_vram(&self) -> Result<u32> {
+        let mut x = MaybeUninit::uninit();
+        let result = unsafe { (self.vtable().TotalVRAM.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
-    //     Error::from_result_with_assume_init_on_success(result, x)
-    // }
+        Error::from_result_with_assume_init_on_success(result, x)
+    }
     // #[doc(alias = "VRAMType")]
     // pub fn VRAMType(&self) -> Result<()> {
     //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().VRAMType.unwrap())(self.imp(), x.as_mut_ptr()) };
+    //     let result = unsafe { (self.vtable().VRAMType.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
     //     Error::from_result_with_assume_init_on_success(result, x)
     // }
     // #[doc(alias = "BIOSInfo")]
     // pub fn BIOSInfo(&self) -> Result<()> {
     //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().BIOSInfo.unwrap())(self.imp(), x.as_mut_ptr()) };
+    //     let result = unsafe { (self.vtable().BIOSInfo.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
     //     Error::from_result_with_assume_init_on_success(result, x)
     // }
-    // #[doc(alias = "DeviceId")]
-    // pub fn DeviceId(&self) -> Result<()> {
-    //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().DeviceId.unwrap())(self.imp(), x.as_mut_ptr()) };
+    #[doc(alias = "DeviceId")]
+    pub fn device_id(&self) -> Result<String> {
+        let mut x = MaybeUninit::uninit();
+        let result = unsafe { (self.vtable().DeviceId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
-    //     Error::from_result_with_assume_init_on_success(result, x)
-    // }
+        Error::from_result_with_assume_init_on_success(result, x).map(|x| unsafe { CStr::from_ptr(x).to_str().unwrap().to_string() })
+    }
     // #[doc(alias = "RevisionId")]
     // pub fn RevisionId(&self) -> Result<()> {
     //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().RevisionId.unwrap())(self.imp(), x.as_mut_ptr()) };
+    //     let result = unsafe { (self.vtable().RevisionId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
     //     Error::from_result_with_assume_init_on_success(result, x)
     // }
     // #[doc(alias = "SubSystemId")]
     // pub fn SubSystemId(&self) -> Result<()> {
     //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().SubSystemId.unwrap())(self.imp(), x.as_mut_ptr()) };
+    //     let result = unsafe { (self.vtable().SubSystemId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
     //     Error::from_result_with_assume_init_on_success(result, x)
     // }
@@ -127,17 +127,17 @@ impl Gpu {
     // pub fn SubSystemVendorId(&self) -> Result<()> {
     //     let mut x = MaybeUninit::uninit();
     //     let result =
-    //         unsafe { (self.vtable().SubSystemVendorId.unwrap())(self.imp(), x.as_mut_ptr()) };
+    //         unsafe { (self.vtable().SubSystemVendorId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
     //     Error::from_result_with_assume_init_on_success(result, x)
     // }
-    // #[doc(alias = "UniqueId")]
-    // pub fn UniqueId(&self) -> Result<()> {
-    //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().UniqueId.unwrap())(self.imp(), x.as_mut_ptr()) };
+    #[doc(alias = "UniqueId")]
+    pub fn unique_id(&self) -> Result<i32> {
+        let mut x = MaybeUninit::uninit();
+        let result = unsafe { (self.vtable().UniqueId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
-    //     Error::from_result_with_assume_init_on_success(result, x)
-    // }
+        Error::from_result_with_assume_init_on_success(result, x)
+    }
 }
 
 // TODO(Marijn): Test inheritance!
