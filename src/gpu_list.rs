@@ -49,4 +49,36 @@ impl GpuList {
         };
         Error::from_result(result)
     }
+
+    pub fn iter(&self) -> GpuIterator {
+        GpuIterator {
+            list: self,
+            i: 0,
+        }
+    }
+}
+
+pub struct GpuIterator<'a> {
+    list: &'a GpuList,
+    i: u32,
+}
+
+impl<'a> Iterator for GpuIterator<'a> {
+    type Item = Gpu;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.i < self.list.size() {
+            let gpu = self.list.at(self.i).unwrap();
+            self.i += 1;
+            Some(gpu)
+        } else {
+            None
+        }
+    }
+}
+
+impl ExactSizeIterator for GpuIterator<'_> {
+    fn len(&self) -> usize {
+        self.list.size() as usize
+    }
 }
