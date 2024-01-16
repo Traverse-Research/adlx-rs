@@ -46,6 +46,7 @@ impl PerformanceMonitoringServices {
     }
 
     #[doc(alias = "SetSamplingInterval")]
+    /// `interval_in_ms` must be in the range provided by [`Self::sampling_interval_range()`].
     pub fn set_sampling_interval(&mut self, interval_in_ms: i32) -> Result<()> {
         let result =
             unsafe { (self.vtable().SetSamplingInterval.unwrap())(self.as_raw(), interval_in_ms) };
@@ -74,6 +75,7 @@ impl PerformanceMonitoringServices {
     }
 
     #[doc(alias = "SetMaxPerformanceMetricsHistorySize")]
+    /// `size_in_sec` must be in the range provided by [`Self::max_performance_metrics_history_range()`].
     pub fn set_max_performance_metrics_history_size(&mut self, size_in_sec: i32) -> Result<()> {
         let result = unsafe {
             (self.vtable().SetMaxPerformanceMetricsHistorySize.unwrap())(self.as_raw(), size_in_sec)
@@ -100,19 +102,17 @@ impl PerformanceMonitoringServices {
         Error::from_result(result)
     }
 
-    // #[doc(alias = "GetCurrentPerformanceMetricsHistorySize")]
-    // pub fn GetCurrentPerformanceMetricsHistorySize(&self) -> Result<i32> {
-    //     let mut metrics = MaybeUninit::uninit();
-    //     let result = unsafe {
-    //         (self.vtable().GetCurrentGPUMetrics.unwrap())(
-    //             self.as_raw(),
-    //             gpu.as_raw(),
-    //             metrics.as_mut_ptr(),
-    //         )
-    //     };
-    //     Error::from_result_with_assume_init_on_success(result, metrics)
-    //         .map(|metrics| unsafe { GpuMetrics::from_raw(metrics) })
-    // }
+    #[doc(alias = "GetCurrentPerformanceMetricsHistorySize")]
+    pub fn current_performance_metrics_history_size_in_sec(&self) -> Result<i32> {
+        let mut size = MaybeUninit::uninit();
+        let result = unsafe {
+            (self.vtable().GetCurrentPerformanceMetricsHistorySize.unwrap())(
+                self.as_raw(),
+                size.as_mut_ptr(),
+            )
+        };
+        Error::from_result_with_assume_init_on_success(result, size)
+    }
 
     #[doc(alias = "StartPerformanceMetricsTracking")]
     pub fn start_performance_tracking(&mut self) -> Result<()> {

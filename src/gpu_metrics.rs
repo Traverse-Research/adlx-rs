@@ -1,4 +1,4 @@
-use std::mem::MaybeUninit;
+use std::{mem::MaybeUninit, ops::Deref};
 
 use crate::list::List;
 
@@ -177,6 +177,14 @@ impl GpuMetricsList {
             (self.vtable().Add_Back_GPUMetricsList.unwrap())(self.as_raw(), gpu_metrics.into_raw())
         };
         Error::from_result(result)
+    }
+}
+
+impl Deref for GpuMetricsList {
+    type Target = List;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
     }
 }
 
