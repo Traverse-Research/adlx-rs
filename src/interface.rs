@@ -129,3 +129,6 @@ impl Clone for InterfaceImpl {
         Self(self.0)
     }
 }
+
+unsafe impl Send for InterfaceImpl {}
+unsafe impl Sync for InterfaceImpl {}
