@@ -1,5 +1,5 @@
 [package]
-name = "adlx-rs"
+name = "adlx"
 version = "0.0.0"
 authors = ["Traverse Research <support@traverseresearch.nl>"]
 edition = "2021"
@@ -11,12 +11,6 @@ include = ["src", "LICENSE"]
 categories = ["api-bindings"] #, "external-ffi-bindings", "rendering::graphics-api"] # https://crates.io/category_slugs
 keywords = ["amd", "adlx", "gpu"]
 
-[dev-dependencies]
-adlx = { path = "adlx" }
+[dependencies]
 anyhow = "1.0.79"
-
-[workspace] 
-members = [ 
-    "adlx",
-    "api-gen"
-] 
+libloading = "0.8"

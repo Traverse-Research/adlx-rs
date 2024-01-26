@@ -1,22 +1,17 @@
 [package]
-name = "adlx-rs"
+name = "api-gen"
 version = "0.0.0"
 authors = ["Traverse Research <support@traverseresearch.nl>"]
 edition = "2021"
 license = "MIT"
+publish = false
 homepage = "https://traverseresearch.nl"
 repository = "https://github.com/Traverse-Research/adlx-rs"
-description = "Bindings for AMd's Device Library eXtra"
+description = "Generates bindings of AMD's ADLX SDK using bindgen."
 include = ["src", "LICENSE"]
 categories = ["api-bindings"] #, "external-ffi-bindings", "rendering::graphics-api"] # https://crates.io/category_slugs
 keywords = ["amd", "adlx", "gpu"]
 
-[dev-dependencies]
-adlx = { path = "adlx" }
-anyhow = "1.0.79"
 
-[workspace] 
-members = [ 
-    "adlx",
-    "api-gen"
-] 
+[build-dependencies]
+bindgen = { version = "0.69.2" }

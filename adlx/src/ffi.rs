@@ -3,4 +3,4 @@
 #![allow(non_snake_case)]
 #![allow(dead_code)]
 
-include!(concat!("adlx/", "/bindings.rs"));
+include!("bindings.rs");
