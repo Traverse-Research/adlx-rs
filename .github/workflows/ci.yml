@@ -30,3 +30,18 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.74.0
       - name: Cargo check
         run: cargo check --workspace --all-targets
+
+  generate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ignore diffs in line endings
+        run: git config core.autocrlf false
+      - name: Checkout submodule
+        # Manually update submodules with --checkout because they are configured with update=none and will be skipped otherwise
+        run: git submodule update --recursive --init --force --checkout
+      - name: Run generator
+        run: cargo r -p api_gen
+      - name: Diff autogen result
+        shell: bash
+        run: test -z "$(git status --porcelain)" || (echo "::error::Generated files are different, please regenerate with cargo run -p api_gen!"; git diff; false)

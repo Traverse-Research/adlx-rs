@@ -1,3 +1,5 @@
 [submodule "ADLX"]
 	path = vendor/ADLX
 	url = https://github.com/GPUOpen-LibrariesAndSDKs/ADLX
+	depth = 1
+	update = none
