@@ -11,12 +11,11 @@ include = ["src", "LICENSE"]
 categories = ["api-bindings"] #, "external-ffi-bindings", "rendering::graphics-api"] # https://crates.io/category_slugs
 keywords = ["amd", "adlx", "gpu"]
 
-[dev-dependencies]
-adlx = { path = "adlx" }
+[dependencies]
 anyhow = "1.0.79"
+libloading = "0.8"
 
 [workspace] 
 members = [ 
-    "adlx",
     "api-gen"
 ] 

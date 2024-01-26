@@ -1,6 +1,6 @@
 //! Open the ADLX library, retrieve [`adlx::adlx::system::System`], and call a simple function on it
 
-use adlx::{gpu::Gpu1, helper::AdlxHelper, interface::Interface};
+use adlx_rs::{gpu::Gpu1, helper::AdlxHelper, interface::Interface};
 use anyhow::Result;
 
 fn main() -> Result<()> {

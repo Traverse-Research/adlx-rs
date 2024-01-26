@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="en-US">
+  <compounddef id="_a_d_l_x3_d_settings_page_8h" kind="file" language="C++">
+    <compoundname>ADLX3DSettingsPage.h</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Copyright<sp/>(c)<sp/>2021<sp/>-<sp/>2023<sp/>Advanced<sp/>Micro<sp/>Devices,<sp/>Inc.<sp/>All<sp/>rights<sp/>reserved.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//-------------------------------------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//IADLX3DAntiLag</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DAntiLag1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DChill</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DBoost</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="173"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DImageSharpening</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="211"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DEnhancedSync</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="250"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DWaitForVerticalRefresh</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="292"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DFrameRateTargetControl</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="331"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DAntiAliasing</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="372"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DMorphologicalAntiAliasing</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="373"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="407"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DAnisotropicFiltering</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="408"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="446"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DTessellation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="447"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="483"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DRadeonSuperResolution</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="484"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="527"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DResetShaderCache</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="528"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="559"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DSettingsChangedEvent</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="560"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="616"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DSettingsChangedListener</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="617"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="650"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DSettingsChangedHandling</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="651"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="682"><highlight class="comment"></highlight><highlight class="comment">//IADLX3DSettingsServices</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="683"><highlight class="normal"></highlight><highlight class="comment">//----------------------------------------------------------------------------------------------</highlight></codeline>
+    </programlisting>
+    <location file="D:/AMD_Git/adlx_release/drivers/ADLX/docs/Config/ADLXInterfacePage/ADLX3DSettingsPage.h"/>
+  </compounddef>
+</doxygen>

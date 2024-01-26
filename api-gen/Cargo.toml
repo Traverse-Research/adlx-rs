@@ -13,5 +13,5 @@ categories = ["api-bindings"] #, "external-ffi-bindings", "rendering::graphics-a
 keywords = ["amd", "adlx", "gpu"]
 
 
-[build-dependencies]
+[dependencies]
 bindgen = { version = "0.69.2" }
