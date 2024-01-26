@@ -1,6 +1,6 @@
-#include "sdk/Include/ADLX.h"
+#include "../../../adlx/SDK/Include/ADLX.h"
 
 // Interfaces to generate bindings for
-#include "sdk/Include/ISystem1.h"
-#include "sdk/Include/IPerformanceMonitoring.h"
-#include "sdk/Include/IPerformanceMonitoring1.h"
+#include "../../../adlx/SDK/Include/ISystem1.h"
+#include "../../../adlx/SDK/Include/IPerformanceMonitoring.h"
+#include "../../../adlx/SDK/Include/IPerformanceMonitoring1.h"
