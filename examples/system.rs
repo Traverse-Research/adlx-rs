@@ -1,6 +1,6 @@
 //! Open the ADLX library, retrieve [`adlx::adlx::system::System`], and call a simple function on it
 
-use adlx::helper::AdlxHelper;
+use adlx::{helper::AdlxHelper, Gpu1, Interface};
 use anyhow::Result;
 
 fn main() -> Result<()> {
@@ -21,17 +21,17 @@ fn main() -> Result<()> {
             println!("GPU #{}: {}", i, gpu.name()?);
 
             // Crashes
-            // let gpu1 = gpu.cast::<Gpu1>();
-            // dbg!(&gpu1);
-            // if let Ok(gpu1) = gpu1 {
-            //     // Test Deref:
-            //     dbg!(gpu1.name()?);
-            //     // Test new function:
-            //     dbg!(gpu1.product_name()?);
-            //     // Test Deref when passing as argument:
-            //     let gpu_metrics = performance_monitoring_services.current_gpu_metrics(&gpu1)?;
-            //     dbg!(&gpu_metrics);
-            // }
+            let gpu1 = gpu.cast::<Gpu1>();
+            dbg!(&gpu1);
+            if let Ok(gpu1) = gpu1 {
+                // Test Deref:
+                dbg!(gpu1.name()?);
+                // Test new function:
+                dbg!(gpu1.product_name()?);
+                // Test Deref when passing as argument:
+                let gpu_metrics = performance_monitoring_services.current_gpu_metrics(&gpu1)?;
+                dbg!(&gpu_metrics);
+            }
 
             let gpu_metrics = performance_monitoring_services.current_gpu_metrics(&gpu)?;
             let supported_metrics = performance_monitoring_services.supported_gpu_metrics(&gpu)?;
