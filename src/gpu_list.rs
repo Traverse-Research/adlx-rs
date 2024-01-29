@@ -51,10 +51,7 @@ impl GpuList {
     }
 
     pub fn iter(&self) -> GpuIterator {
-        GpuIterator {
-            list: self,
-            i: 0,
-        }
+        GpuIterator { list: self, i: 0 }
     }
 }
 

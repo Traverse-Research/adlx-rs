@@ -107,7 +107,8 @@ impl Gpu {
         let mut x = MaybeUninit::uninit();
         let result = unsafe { (self.vtable().DeviceId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
-        Error::from_result_with_assume_init_on_success(result, x).map(|x| unsafe { CStr::from_ptr(x).to_str().unwrap().to_string() })
+        Error::from_result_with_assume_init_on_success(result, x)
+            .map(|x| unsafe { CStr::from_ptr(x).to_str().unwrap().to_string() })
     }
     // #[doc(alias = "RevisionId")]
     // pub fn RevisionId(&self) -> Result<()> {

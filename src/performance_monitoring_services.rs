@@ -106,10 +106,10 @@ impl PerformanceMonitoringServices {
     pub fn current_performance_metrics_history_size_in_sec(&self) -> Result<i32> {
         let mut size = MaybeUninit::uninit();
         let result = unsafe {
-            (self.vtable().GetCurrentPerformanceMetricsHistorySize.unwrap())(
-                self.as_raw(),
-                size.as_mut_ptr(),
-            )
+            (self
+                .vtable()
+                .GetCurrentPerformanceMetricsHistorySize
+                .unwrap())(self.as_raw(), size.as_mut_ptr())
         };
         Error::from_result_with_assume_init_on_success(result, size)
     }
