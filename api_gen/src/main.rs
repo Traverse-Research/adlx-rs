@@ -7,7 +7,7 @@ fn main() {
 
     let bindings = bindgen::Builder::default()
         .header(header_path.to_string_lossy())
-        .clang_arg(&format!(
+        .clang_arg(format!(
             "-I{}",
             crate_root.join("../vendor/ADLX/SDK/Include/").display()
         ))
