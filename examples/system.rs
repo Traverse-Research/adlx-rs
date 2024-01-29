@@ -1,6 +1,6 @@
 //! Open the ADLX library, retrieve [`adlx::adlx::system::System`], and call a simple function on it
 
-use adlx_rs::helper::AdlxHelper;
+use adlx::helper::AdlxHelper;
 use anyhow::Result;
 
 fn main() -> Result<()> {
