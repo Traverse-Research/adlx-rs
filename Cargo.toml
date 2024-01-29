@@ -1,5 +1,5 @@
 [package]
-name = "adlx-rs"
+name = "adlx"
 version = "0.0.0"
 authors = ["Traverse Research <support@traverseresearch.nl>"]
 edition = "2021"
