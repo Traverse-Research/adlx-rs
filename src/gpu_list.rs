@@ -9,7 +9,7 @@ use super::{
 };
 
 /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list/>
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXGPUList")]
 pub struct GpuList(List);

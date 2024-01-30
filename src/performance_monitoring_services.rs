@@ -1,11 +1,9 @@
 use std::mem::MaybeUninit;
 
-use crate::gpu_metrics::{GpuMetricsList, GpuMetricsSupport};
-
 use super::{
     ffi,
     gpu::Gpu,
-    gpu_metrics::GpuMetrics,
+    gpu_metrics::{GpuMetrics, GpuMetricsList, GpuMetricsSupport},
     interface::{Interface, InterfaceImpl},
     result::{Error, Result},
 };
