@@ -17,6 +17,9 @@ use super::{
 #[doc(alias = "IADLXSystem")]
 pub struct System(*mut ffi::IADLXSystem);
 
+unsafe impl Send for System {}
+unsafe impl Sync for System {}
+
 impl System {
     /// Creates an [`Interface`] by taking ownership of the `raw` COM/ADLX interface pointer.
     ///
