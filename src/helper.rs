@@ -89,8 +89,8 @@ impl AdlxHelper {
         let version = unsafe {
             let mut version = MaybeUninit::uninit();
             let result = (functions.version_fn.unwrap())(version.as_mut_ptr());
-            Error::from_result_with_assume_init_on_success(result, version)
-                .map(|version| CStr::from_ptr(version).to_str().unwrap().to_string())?
+            let version = Error::from_result_with_assume_init_on_success(result, version)?;
+            CStr::from_ptr(version).to_str().unwrap().to_string()
         };
 
         // TODO: C++ helper does extra things if an ADL context is provided.
@@ -102,7 +102,7 @@ impl AdlxHelper {
 
             System::from_raw(system)
         };
-        
+
         Ok(AdlxHelper {
             functions,
 

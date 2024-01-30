@@ -25,7 +25,7 @@ impl Gpu {
         let result = unsafe { (self.vtable().VendorId.unwrap())(self.as_raw(), name.as_mut_ptr()) };
 
         Error::from_result_with_assume_init_on_success(result, name)
-            .map(|name| unsafe { CStr::from_ptr(name) }.to_str().unwrap())
+            .map(|x| unsafe { CStr::from_ptr(x) }.to_str().unwrap())
     }
     #[doc(alias = "ASICFamilyType")]
     pub fn asic_family_type(&self) -> Result<ffi::ADLX_ASIC_FAMILY_TYPE> {
@@ -44,12 +44,12 @@ impl Gpu {
         Error::from_result_with_assume_init_on_success(result, type_)
     }
     #[doc(alias = "IsExternal")]
-    pub fn is_external(&self) -> Result<ffi::adlx_bool> {
+    pub fn is_external(&self) -> Result<bool> {
         let mut is_external = MaybeUninit::uninit();
         let result =
             unsafe { (self.vtable().IsExternal.unwrap())(self.as_raw(), is_external.as_mut_ptr()) };
 
-        Error::from_result_with_assume_init_on_success(result, is_external)
+        Error::from_result_with_assume_init_on_success(result, is_external).map(|x| x != 0)
     }
     /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u__name/#doxid-d-o-x-i-a-d-l-x-g-p-u-name>
     #[doc(alias = "Name")]
@@ -60,20 +60,22 @@ impl Gpu {
         Error::from_result_with_assume_init_on_success(result, name)
             .map(|name| unsafe { CStr::from_ptr(name) }.to_str().unwrap())
     }
-    // #[doc(alias = "DriverPath")]
-    // pub fn DriverPath(&self) -> Result<()> {
-    //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().DriverPath.unwrap())(self.as_raw(), x.as_mut_ptr()) };
+    #[doc(alias = "DriverPath")]
+    pub fn driver_path(&self) -> Result<&str> {
+        let mut x = MaybeUninit::uninit();
+        let result = unsafe { (self.vtable().DriverPath.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
-    //     Error::from_result_with_assume_init_on_success(result, x)
-    // }
-    // #[doc(alias = "PNPString")]
-    // pub fn PNPString(&self) -> Result<()> {
-    //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().PNPString.unwrap())(self.as_raw(), x.as_mut_ptr()) };
+        Error::from_result_with_assume_init_on_success(result, x)
+            .map(|x| unsafe { CStr::from_ptr(x) }.to_str().unwrap())
+    }
+    #[doc(alias = "PNPString")]
+    pub fn pnp_string(&self) -> Result<&str> {
+        let mut x = MaybeUninit::uninit();
+        let result = unsafe { (self.vtable().PNPString.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
-    //     Error::from_result_with_assume_init_on_success(result, x)
-    // }
+        Error::from_result_with_assume_init_on_success(result, x)
+            .map(|x| unsafe { CStr::from_ptr(x) }.to_str().unwrap())
+    }
     // #[doc(alias = "HasDesktops")]
     // pub fn HasDesktops(&self) -> Result<()> {
     //     let mut x = MaybeUninit::uninit();
@@ -88,13 +90,14 @@ impl Gpu {
 
         Error::from_result_with_assume_init_on_success(result, x)
     }
-    // #[doc(alias = "VRAMType")]
-    // pub fn VRAMType(&self) -> Result<()> {
-    //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().VRAMType.unwrap())(self.as_raw(), x.as_mut_ptr()) };
+    #[doc(alias = "VRAMType")]
+    pub fn vram_type(&self) -> Result<&str> {
+        let mut x = MaybeUninit::uninit();
+        let result = unsafe { (self.vtable().VRAMType.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
-    //     Error::from_result_with_assume_init_on_success(result, x)
-    // }
+        Error::from_result_with_assume_init_on_success(result, x)
+            .map(|x| unsafe { CStr::from_ptr(x) }.to_str().unwrap())
+    }
     // #[doc(alias = "BIOSInfo")]
     // pub fn BIOSInfo(&self) -> Result<()> {
     //     let mut x = MaybeUninit::uninit();
@@ -103,35 +106,38 @@ impl Gpu {
     //     Error::from_result_with_assume_init_on_success(result, x)
     // }
     #[doc(alias = "DeviceId")]
-    pub fn device_id(&self) -> Result<String> {
+    pub fn device_id(&self) -> Result<&str> {
         let mut x = MaybeUninit::uninit();
         let result = unsafe { (self.vtable().DeviceId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
         Error::from_result_with_assume_init_on_success(result, x)
-            .map(|x| unsafe { CStr::from_ptr(x).to_str().unwrap().to_string() })
+            .map(|x| unsafe { CStr::from_ptr(x) }.to_str().unwrap())
     }
-    // #[doc(alias = "RevisionId")]
-    // pub fn RevisionId(&self) -> Result<()> {
-    //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().RevisionId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
+    #[doc(alias = "RevisionId")]
+    pub fn revision_id(&self) -> Result<&str> {
+        let mut x = MaybeUninit::uninit();
+        let result = unsafe { (self.vtable().RevisionId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
-    //     Error::from_result_with_assume_init_on_success(result, x)
-    // }
-    // #[doc(alias = "SubSystemId")]
-    // pub fn SubSystemId(&self) -> Result<()> {
-    //     let mut x = MaybeUninit::uninit();
-    //     let result = unsafe { (self.vtable().SubSystemId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
+        Error::from_result_with_assume_init_on_success(result, x)
+            .map(|x| unsafe { CStr::from_ptr(x) }.to_str().unwrap())
+    }
+    #[doc(alias = "SubSystemId")]
+    pub fn sub_system_id(&self) -> Result<&str> {
+        let mut x = MaybeUninit::uninit();
+        let result = unsafe { (self.vtable().SubSystemId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
-    //     Error::from_result_with_assume_init_on_success(result, x)
-    // }
-    // #[doc(alias = "SubSystemVendorId")]
-    // pub fn SubSystemVendorId(&self) -> Result<()> {
-    //     let mut x = MaybeUninit::uninit();
-    //     let result =
-    //         unsafe { (self.vtable().SubSystemVendorId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
+        Error::from_result_with_assume_init_on_success(result, x)
+            .map(|x| unsafe { CStr::from_ptr(x) }.to_str().unwrap())
+    }
+    #[doc(alias = "SubSystemVendorId")]
+    pub fn sub_system_vendor_id(&self) -> Result<&str> {
+        let mut x = MaybeUninit::uninit();
+        let result =
+            unsafe { (self.vtable().SubSystemVendorId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
-    //     Error::from_result_with_assume_init_on_success(result, x)
-    // }
+        Error::from_result_with_assume_init_on_success(result, x)
+            .map(|x| unsafe { CStr::from_ptr(x) }.to_str().unwrap())
+    }
     #[doc(alias = "UniqueId")]
     pub fn unique_id(&self) -> Result<i32> {
         let mut x = MaybeUninit::uninit();
