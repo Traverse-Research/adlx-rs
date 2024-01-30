@@ -102,7 +102,7 @@ impl AdlxHelper {
 
             System::from_raw(system)
         };
-        dbg!(&version);
+        
         Ok(AdlxHelper {
             functions,
 
