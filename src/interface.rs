@@ -84,15 +84,15 @@ pub unsafe trait Interface: Sized {
 #[derive(Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXInterface")]
-pub struct InterfaceImpl(*mut ffi::IADLXInterface);
+pub struct InterfaceImpl<'lib>(*mut ffi::IADLXInterface, std::marker::PhantomData<&'lib ()>);
 
-unsafe impl Interface for InterfaceImpl {
+unsafe impl Interface for InterfaceImpl<'_> {
     type Impl = ffi::IADLXInterface;
     type Vtable = ffi::IADLXInterfaceVtbl;
     const IID: &'static str = "IADLXInterface";
 }
 
-impl InterfaceImpl {
+impl InterfaceImpl<'_> {
     /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_interface__query_interface/>
     #[doc(alias = "QueryInterface")]
     pub fn cast<I: Interface>(&self) -> Result<I> {
@@ -113,7 +113,7 @@ impl InterfaceImpl {
     }
 }
 
-impl Drop for InterfaceImpl {
+impl Drop for InterfaceImpl<'_> {
     /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_interface__release/>
     #[doc(alias = "Release")]
     fn drop(&mut self) {
@@ -121,14 +121,14 @@ impl Drop for InterfaceImpl {
     }
 }
 
-impl Clone for InterfaceImpl {
+impl Clone for InterfaceImpl<'_> {
     /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_interface__acquire/>
     #[doc(alias = "Acquire")]
     fn clone(&self) -> Self {
         let _rc = unsafe { (self.vtable().Acquire.unwrap())(self.0) };
-        Self(self.0)
+        Self(self.0, std::marker::PhantomData)
     }
 }
 
-unsafe impl Send for InterfaceImpl {}
-unsafe impl Sync for InterfaceImpl {}
+unsafe impl Send for InterfaceImpl<'_> {}
+unsafe impl Sync for InterfaceImpl<'_> {}

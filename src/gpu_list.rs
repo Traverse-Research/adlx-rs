@@ -12,26 +12,26 @@ use super::{
 #[derive(Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXGPUList")]
-pub struct GpuList(List);
+pub struct GpuList<'lib>(List<'lib>);
 
-unsafe impl Interface for GpuList {
+unsafe impl Interface for GpuList<'_> {
     type Impl = ffi::IADLXGPUList;
     type Vtable = ffi::IADLXGPUListVtbl;
     const IID: &'static str = "IADLXGPUList";
 }
 
-impl Deref for GpuList {
-    type Target = List;
+impl<'lib> Deref for GpuList<'lib> {
+    type Target = List<'lib>;
 
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
-impl GpuList {
+impl<'lib> GpuList<'lib> {
     /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list__at/>
     #[doc(alias = "At_GPUList")]
-    pub fn at(&self, location: u32) -> Result<Gpu> {
+    pub fn at(&self, location: u32) -> Result<Gpu<'lib>> {
         let mut gpu = MaybeUninit::uninit();
         let result = unsafe {
             (self.vtable().At_GPUList.unwrap())(self.as_raw(), location, gpu.as_mut_ptr())
@@ -42,7 +42,7 @@ impl GpuList {
     /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list__add__back/#doxid-d-o-x-i-a-d-l-x-g-p-u-list-add-back>
     #[doc(alias = "Add_Back_GPUList")]
     // TODO(Marijn): This API does not allow moves of derivatives, such as Gpu1.
-    pub fn add_back(&self, gpu: Gpu) -> Result<()> {
+    pub fn add_back(&self, gpu: Gpu<'lib>) -> Result<()> {
         let result = unsafe {
             // TODO: Assume ownership is consumed here?
             (self.vtable().Add_Back_GPUList.unwrap())(self.as_raw(), gpu.into_raw())
@@ -55,13 +55,13 @@ impl GpuList {
     }
 }
 
-pub struct GpuIterator<'a> {
-    list: &'a GpuList,
+pub struct GpuIterator<'list, 'lib: 'list> {
+    list: &'list GpuList<'lib>,
     i: u32,
 }
 
-impl<'a> Iterator for GpuIterator<'a> {
-    type Item = Gpu;
+impl<'list, 'lib: 'list> Iterator for GpuIterator<'list, 'lib> {
+    type Item = Gpu<'lib>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.i < self.list.size() {
@@ -74,7 +74,7 @@ impl<'a> Iterator for GpuIterator<'a> {
     }
 }
 
-impl ExactSizeIterator for GpuIterator<'_> {
+impl ExactSizeIterator for GpuIterator<'_, '_> {
     fn len(&self) -> usize {
         self.list.size() as usize
     }

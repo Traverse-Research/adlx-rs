@@ -11,15 +11,15 @@ use super::{
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXGPUMetrics")]
-pub struct GpuMetrics(InterfaceImpl);
+pub struct GpuMetrics<'lib>(InterfaceImpl<'lib>);
 
-unsafe impl Interface for GpuMetrics {
+unsafe impl Interface for GpuMetrics<'_> {
     type Impl = ffi::IADLXGPUMetrics;
     type Vtable = ffi::IADLXGPUMetricsVtbl;
     const IID: &'static str = "IADLXGPUMetrics";
 }
 
-impl GpuMetrics {
+impl GpuMetrics<'_> {
     #[doc(alias = "TimeStamp")]
     pub fn time_stamp(&self) -> Result<i64> {
         let mut time_stamp = MaybeUninit::uninit();
@@ -146,15 +146,15 @@ impl GpuMetrics {
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXGPUMetricsList")]
-pub struct GpuMetricsList(List);
+pub struct GpuMetricsList<'lib>(List<'lib>);
 
-unsafe impl Interface for GpuMetricsList {
+unsafe impl Interface for GpuMetricsList<'_> {
     type Impl = ffi::IADLXGPUMetricsList;
     type Vtable = ffi::IADLXGPUMetricsListVtbl;
     const IID: &'static str = "IADLXGpuMetricsList";
 }
 
-impl GpuMetricsList {
+impl GpuMetricsList<'_> {
     /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list__at/>
     #[doc(alias = "At_GPUMetricsList")]
     pub fn at(&self, location: u32) -> Result<GpuMetrics> {
@@ -180,8 +180,8 @@ impl GpuMetricsList {
     }
 }
 
-impl Deref for GpuMetricsList {
-    type Target = List;
+impl<'lib> Deref for GpuMetricsList<'lib> {
+    type Target = List<'lib>;
 
     fn deref(&self) -> &Self::Target {
         &self.0
@@ -191,15 +191,15 @@ impl Deref for GpuMetricsList {
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXGPUMetricsSupport")]
-pub struct GpuMetricsSupport(InterfaceImpl);
+pub struct GpuMetricsSupport<'lib>(InterfaceImpl<'lib>);
 
-unsafe impl Interface for GpuMetricsSupport {
+unsafe impl Interface for GpuMetricsSupport<'_> {
     type Impl = ffi::IADLXGPUMetricsSupport;
     type Vtable = ffi::IADLXGPUMetricsSupportVtbl;
     const IID: &'static str = "IADLXGpuMetricsSupport";
 }
 
-impl GpuMetricsSupport {
+impl GpuMetricsSupport<'_> {
     #[doc(alias = "IsSupportedGPUUsage")]
     pub fn is_supported_gpu_usage(&self) -> Result<bool> {
         unsafe {

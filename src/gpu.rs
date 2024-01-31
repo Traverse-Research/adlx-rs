@@ -10,15 +10,15 @@ use super::{
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXGPU")]
-pub struct Gpu(InterfaceImpl);
+pub struct Gpu<'lib>(InterfaceImpl<'lib>);
 
-unsafe impl Interface for Gpu {
+unsafe impl Interface for Gpu<'_> {
     type Impl = ffi::IADLXGPU;
     type Vtable = ffi::IADLXGPUVtbl;
     const IID: &'static str = "IADLXGPU";
 }
 
-impl Gpu {
+impl Gpu<'_> {
     #[doc(alias = "VendorId")]
     pub fn vendor_id(&self) -> Result<&str> {
         let mut name = MaybeUninit::uninit();
@@ -146,24 +146,24 @@ impl Gpu {
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXGPU1")]
-pub struct Gpu1(Gpu);
+pub struct Gpu1<'lib>(Gpu<'lib>);
 
-unsafe impl Interface for Gpu1 {
+unsafe impl Interface for Gpu1<'_> {
     type Impl = ffi::IADLXGPU1;
     type Vtable = ffi::IADLXGPU1Vtbl;
     const IID: &'static str = "IADLXGPU1";
 }
 
 // TODO: Autogenerate interface hierarchy chains?
-impl Deref for Gpu1 {
-    type Target = Gpu;
+impl<'lib> Deref for Gpu1<'lib> {
+    type Target = Gpu<'lib>;
 
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
-impl Gpu1 {
+impl Gpu1<'_> {
     #[doc(alias = "PCIBusType")]
     pub fn pci_bus_type(&self) -> Result<ffi::ADLX_PCI_BUS_TYPE> {
         let mut pci_bus_type = MaybeUninit::uninit();

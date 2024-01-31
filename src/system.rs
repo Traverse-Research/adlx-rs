@@ -113,7 +113,7 @@ impl System {
     //     Ok(())
     // }
     #[doc(alias = "GetPerformanceMonitoringServices")]
-    pub fn performance_monitoring_services(&self) -> Result<PerformanceMonitoringServices> {
+    pub fn performance_monitoring_services<'lib>(&self) -> Result<PerformanceMonitoringServices<'lib>> {
         let mut services = MaybeUninit::uninit();
         let result = unsafe {
             (self.vtable().GetPerformanceMonitoringServices.unwrap())(self.0, services.as_mut_ptr())
@@ -141,15 +141,15 @@ impl System {
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXSystem1")]
-pub struct System1(InterfaceImpl);
+pub struct System1<'lib>(InterfaceImpl<'lib>);
 
-unsafe impl Interface for System1 {
+unsafe impl Interface for System1<'_> {
     type Impl = ffi::IADLXSystem1;
     type Vtable = ffi::IADLXSystem1Vtbl;
     const IID: &'static str = "IADLXSystem1";
 }
 
-impl System1 {
+impl System1<'_> {
     // /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_system1__get_power_tuning_services/>
     // #[doc(alias = "GetPowerTuningServices")]
     // pub fn power_tuning_services(&self) -> Result<PowerTuningServices> {

@@ -13,15 +13,15 @@ use super::{
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXPerformanceMonitoringServices")]
-pub struct PerformanceMonitoringServices(InterfaceImpl);
+pub struct PerformanceMonitoringServices<'lib>(InterfaceImpl<'lib>);
 
-unsafe impl Interface for PerformanceMonitoringServices {
+unsafe impl Interface for PerformanceMonitoringServices<'_> {
     type Impl = ffi::IADLXPerformanceMonitoringServices;
     type Vtable = ffi::IADLXPerformanceMonitoringServicesVtbl;
     const IID: &'static str = "IADLXPerformanceMonitoringServices";
 }
 
-impl PerformanceMonitoringServices {
+impl PerformanceMonitoringServices<'_> {
     #[doc(alias = "GetCurrentGPUMetrics")]
     pub fn current_gpu_metrics(&self, gpu: &Gpu) -> Result<GpuMetrics> {
         let mut metrics = MaybeUninit::uninit();
