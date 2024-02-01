@@ -1,4 +1,4 @@
-use std::mem::MaybeUninit;
+use std::{marker::PhantomData, mem::MaybeUninit};
 
 use super::{
     ffi,
@@ -15,12 +15,12 @@ use super::{
 #[derive(Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXSystem")]
-pub struct System(*mut ffi::IADLXSystem);
+pub struct System<'lib>(*mut ffi::IADLXSystem, PhantomData<&'lib ()>);
 
-unsafe impl Send for System {}
-unsafe impl Sync for System {}
+unsafe impl Send for System<'_> {}
+unsafe impl Sync for System<'_> {}
 
-impl System {
+impl System<'_> {
     /// Creates an [`Interface`] by taking ownership of the `raw` COM/ADLX interface pointer.
     ///
     /// # Safety
@@ -29,7 +29,7 @@ impl System {
     /// pointer. In other words, it must point to a vtable beginning with the
     /// [`ffi::IADLXSystemVtbl`] function pointers.
     pub(crate) unsafe fn from_raw(raw: *mut ffi::IADLXSystem) -> Self {
-        Self(raw)
+        Self(raw, PhantomData)
     }
 
     fn vtable(&self) -> &ffi::IADLXSystemVtbl {

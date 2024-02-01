@@ -66,16 +66,16 @@ impl AdlxFunctions {
     }
 }
 
-pub struct AdlxHelper {
+pub struct AdlxHelper<'lib> {
     functions: AdlxFunctions,
 
-    system: super::system::System,
+    system: super::system::System<'lib>,
 
     full_version: u64,
     version: String,
 }
 
-impl AdlxHelper {
+impl AdlxHelper<'_> {
     pub fn new() -> Result<Self> {
         let functions = unsafe { AdlxFunctions::load()? };
 
@@ -102,7 +102,7 @@ impl AdlxHelper {
 
             System::from_raw(system)
         };
-        
+
         Ok(AdlxHelper {
             functions,
 
@@ -125,7 +125,7 @@ impl AdlxHelper {
     }
 }
 
-impl Drop for AdlxHelper {
+impl Drop for AdlxHelper<'_> {
     fn drop(&mut self) {
         // SAFETY: Nullity checked at load-time
         let result = unsafe { (self.functions.terminate_fn.unwrap_unchecked())() };
