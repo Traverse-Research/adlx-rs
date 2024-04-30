@@ -5,4 +5,5 @@ edition = "2021"
 publish = false
 
 [dependencies]
-bindgen = "0.69.2"
+# Version-locked to not make the CI go out of date
+bindgen = "=0.69.4"
