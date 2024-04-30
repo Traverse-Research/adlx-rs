@@ -1,14 +1,14 @@
 [package]
 name = "adlx"
-version = "0.0.0"
+version = "0.0.0-alpha.1"
 authors = ["Traverse Research <support@traverseresearch.nl>"]
 edition = "2021"
 license = "MIT"
 homepage = "https://traverseresearch.nl"
 repository = "https://github.com/Traverse-Research/adlx-rs"
-description = "Bindings for AMd's Device Library eXtra"
+description = "Bindings for AMD's Device Library eXtra"
 include = ["src", "LICENSE"]
-categories = ["api-bindings"] #, "external-ffi-bindings", "rendering::graphics-api"] # https://crates.io/category_slugs
+categories = ["api-bindings", "external-ffi-bindings", "graphics"] # https://crates.io/category_slugs
 keywords = ["amd", "adlx", "gpu"]
 
 [dependencies]
