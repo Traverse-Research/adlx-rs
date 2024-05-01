@@ -7,3 +7,5 @@ publish = false
 [dependencies]
 # Version-locked to not make the CI go out of date
 bindgen = "=0.69.4"
+# Force a higher version to fix https://github.com/rust-lang/regex/issues/770 in MSRV
+regex-syntax = "0.6.26"
