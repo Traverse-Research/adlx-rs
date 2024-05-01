@@ -6,7 +6,7 @@ sign-tag = true
 publish = false
 
 pre-release-replacements = [
-  { file = "README.md", search = "adlx-rs = .*", replace = "{{crate_name}} = \"{{version}}\"" },
+  { file = "README.md", search = "adlx = .*", replace = "{{crate_name}} = \"{{version}}\"" },
 ]
 
 # cargo-release only allows using {{version}} in the commit title when creating one
