@@ -18,7 +18,7 @@ Add this to your Cargo.toml:
 
 ```toml
 [dependencies]
-adlx = "0.0.0"
+adlx = "0.0.0-alpha.1"
 ```
 
 ## Code example
