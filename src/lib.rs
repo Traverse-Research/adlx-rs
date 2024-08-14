@@ -17,6 +17,8 @@ pub mod list;
 pub mod performance_monitoring_services;
 pub mod result;
 pub mod system;
+pub mod three_d_settings_services;
+pub mod three_d_wait_for_vertical_refresh;
 
 pub use gpu::*;
 pub use gpu_list::*;
@@ -27,3 +29,5 @@ pub use list::*;
 pub use performance_monitoring_services::*;
 pub use result::*;
 pub use system::*;
+pub use three_d_settings_services::*;
+pub use three_d_wait_for_vertical_refresh::*;

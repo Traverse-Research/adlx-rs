@@ -6,6 +6,7 @@ use super::{
     interface::{Interface, InterfaceImpl},
     performance_monitoring_services::PerformanceMonitoringServices,
     result::{Error, Result},
+    ThreeDSettingsServices,
 };
 
 /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_system/>
@@ -98,13 +99,15 @@ impl System {
 
     //     Ok(())
     // }
-    // #[doc(alias = "Get3DSettingsServices")]
-    // pub fn Get3DSettingsServices(&self) -> Result<()> {
-    //     let result = unsafe { (self.vtable().Get3DSettingsServices.unwrap())(self.0) };
-    //     Error::from_result(result)?;
-
-    //     Ok(())
-    // }
+    #[doc(alias = "Get3DSettingsServices")]
+    pub fn get_3d_settings_services(&self) -> Result<ThreeDSettingsServices> {
+        let mut settings_service = MaybeUninit::uninit();
+        let result = unsafe {
+            (self.vtable().Get3DSettingsServices.unwrap())(self.0, settings_service.as_mut_ptr())
+        };
+        Error::from_result_with_assume_init_on_success(result, settings_service)
+            .map(|settings_service| unsafe { ThreeDSettingsServices::from_raw(settings_service) })
+    }
     // #[doc(alias = "GetGPUTuningServices")]
     // pub fn GetGPUTuningServices(&self) -> Result<()> {
     //     let result = unsafe { (self.vtable().GetGPUTuningServices.unwrap())(self.0) };
