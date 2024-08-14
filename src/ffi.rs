@@ -21,6 +21,7 @@ pub type adlx_uint64 = u64;
 pub type adlx_uint32 = u32;
 pub type adlx_uint16 = u16;
 pub type adlx_uint8 = u8;
+pub type adlx_size = usize;
 pub type adlx_handle = *mut ::std::os::raw::c_void;
 pub type adlx_double = f64;
 pub type adlx_long = ::std::os::raw::c_long;
@@ -1521,11 +1522,6 @@ pub struct IADLXDesktopServices {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct IADLXDisplayServices {
-    _unused: [u8; 0],
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
 pub struct IADLXLog {
     _unused: [u8; 0],
 }
@@ -1780,11 +1776,6 @@ fn bindgen_test_layout_IADLXSystem() {
             stringify!(pVtbl)
         )
     );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct IADLXDisplay {
-    _unused: [u8; 0],
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -12517,6 +12508,2341 @@ fn bindgen_test_layout_IADLXDisplayBlanking() {
         concat!(
             "Offset of field: ",
             stringify!(IADLXDisplayBlanking),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayGamut {
+    _unused: [u8; 0],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayGamma {
+    _unused: [u8; 0],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplay3DLUT {
+    _unused: [u8; 0],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayVtbl {
+    pub Acquire: ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplay) -> adlx_long>,
+    pub Release: ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplay) -> adlx_long>,
+    pub QueryInterface: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay,
+            interfaceId: *const wchar_t,
+            ppInterface: *mut *mut ::std::os::raw::c_void,
+        ) -> ADLX_RESULT,
+    >,
+    pub ManufacturerID: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay,
+            manufacturerID: *mut adlx_uint,
+        ) -> ADLX_RESULT,
+    >,
+    pub DisplayType: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay,
+            displayType: *mut ADLX_DISPLAY_TYPE,
+        ) -> ADLX_RESULT,
+    >,
+    pub ConnectorType: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay,
+            connectType: *mut ADLX_DISPLAY_CONNECTOR_TYPE,
+        ) -> ADLX_RESULT,
+    >,
+    pub Name: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay,
+            displayName: *mut *const ::std::os::raw::c_char,
+        ) -> ADLX_RESULT,
+    >,
+    pub EDID: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay,
+            edid: *mut *const ::std::os::raw::c_char,
+        ) -> ADLX_RESULT,
+    >,
+    pub NativeResolution: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay,
+            maxHResolution: *mut adlx_int,
+            maxVResolution: *mut adlx_int,
+        ) -> ADLX_RESULT,
+    >,
+    pub RefreshRate: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay,
+            refreshRate: *mut adlx_double,
+        ) -> ADLX_RESULT,
+    >,
+    pub PixelClock: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplay, pixelClock: *mut adlx_uint) -> ADLX_RESULT,
+    >,
+    pub ScanType: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay,
+            scanType: *mut ADLX_DISPLAY_SCAN_TYPE,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetGPU: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplay, ppGPU: *mut *mut IADLXGPU) -> ADLX_RESULT,
+    >,
+    pub UniqueId: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplay, uniqueId: *mut adlx_size) -> ADLX_RESULT,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayVtbl> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayVtbl>(),
+        112usize,
+        concat!("Size of: ", stringify!(IADLXDisplayVtbl))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayVtbl>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplayVtbl))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Acquire) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(Acquire)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Release) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(Release)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).QueryInterface) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(QueryInterface)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ManufacturerID) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(ManufacturerID)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).DisplayType) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(DisplayType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ConnectorType) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(ConnectorType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Name) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(Name)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).EDID) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(EDID)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).NativeResolution) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(NativeResolution)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).RefreshRate) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(RefreshRate)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).PixelClock) as usize - ptr as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(PixelClock)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).ScanType) as usize - ptr as usize },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(ScanType)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetGPU) as usize - ptr as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(GetGPU)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).UniqueId) as usize - ptr as usize },
+        104usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayVtbl),
+            "::",
+            stringify!(UniqueId)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplay {
+    pub pVtbl: *const IADLXDisplayVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplay() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplay> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplay>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplay))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplay>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplay))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayListVtbl {
+    pub Acquire:
+        ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplayList) -> adlx_long>,
+    pub Release:
+        ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplayList) -> adlx_long>,
+    pub QueryInterface: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayList,
+            interfaceId: *const wchar_t,
+            ppInterface: *mut *mut ::std::os::raw::c_void,
+        ) -> ADLX_RESULT,
+    >,
+    pub Size:
+        ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplayList) -> adlx_uint>,
+    pub Empty:
+        ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplayList) -> adlx_bool>,
+    pub Begin:
+        ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplayList) -> adlx_uint>,
+    pub End: ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplayList) -> adlx_uint>,
+    pub At: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayList,
+            location: adlx_uint,
+            ppItem: *mut *mut IADLXInterface,
+        ) -> ADLX_RESULT,
+    >,
+    pub Clear:
+        ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplayList) -> ADLX_RESULT>,
+    pub Remove_Back:
+        ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplayList) -> ADLX_RESULT>,
+    pub Add_Back: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayList,
+            pItem: *mut IADLXInterface,
+        ) -> ADLX_RESULT,
+    >,
+    pub At_DisplayList: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayList,
+            location: adlx_uint,
+            ppItem: *mut *mut IADLXDisplay,
+        ) -> ADLX_RESULT,
+    >,
+    pub Add_Back_DisplayList: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayList, pItem: *mut IADLXDisplay) -> ADLX_RESULT,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayListVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayListVtbl> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayListVtbl>(),
+        104usize,
+        concat!("Size of: ", stringify!(IADLXDisplayListVtbl))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayListVtbl>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplayListVtbl))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Acquire) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(Acquire)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Release) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(Release)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).QueryInterface) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(QueryInterface)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Size) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(Size)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Empty) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(Empty)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Begin) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(Begin)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).End) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(End)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).At) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(At)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Clear) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(Clear)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Remove_Back) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(Remove_Back)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Add_Back) as usize - ptr as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(Add_Back)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).At_DisplayList) as usize - ptr as usize },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(At_DisplayList)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Add_Back_DisplayList) as usize - ptr as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListVtbl),
+            "::",
+            stringify!(Add_Back_DisplayList)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayList {
+    pub pVtbl: *const IADLXDisplayListVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayList() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayList> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayList>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplayList))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayList>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplayList))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayList),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayListChangedListenerVtbl {
+    pub OnDisplayListChanged: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayListChangedListener,
+            pNewDisplay: *mut IADLXDisplayList,
+        ) -> adlx_bool,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayListChangedListenerVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayListChangedListenerVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayListChangedListenerVtbl>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplayListChangedListenerVtbl))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayListChangedListenerVtbl>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplayListChangedListenerVtbl)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).OnDisplayListChanged) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListChangedListenerVtbl),
+            "::",
+            stringify!(OnDisplayListChanged)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayListChangedListener {
+    pub pVtbl: *const IADLXDisplayListChangedListenerVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayListChangedListener() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayListChangedListener> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayListChangedListener>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplayListChangedListener))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayListChangedListener>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplayListChangedListener))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayListChangedListener),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayGamutChangedEventVtbl {
+    pub Acquire: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGamutChangedEvent) -> adlx_long,
+    >,
+    pub Release: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGamutChangedEvent) -> adlx_long,
+    >,
+    pub QueryInterface: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayGamutChangedEvent,
+            interfaceId: *const wchar_t,
+            ppInterface: *mut *mut ::std::os::raw::c_void,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetOrigin: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGamutChangedEvent) -> ADLX_SYNC_ORIGIN,
+    >,
+    pub GetDisplay: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayGamutChangedEvent,
+            ppDisplay: *mut *mut IADLXDisplay,
+        ) -> ADLX_RESULT,
+    >,
+    pub IsWhitePointChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGamutChangedEvent) -> adlx_bool,
+    >,
+    pub IsColorSpaceChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGamutChangedEvent) -> adlx_bool,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayGamutChangedEventVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayGamutChangedEventVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayGamutChangedEventVtbl>(),
+        56usize,
+        concat!("Size of: ", stringify!(IADLXDisplayGamutChangedEventVtbl))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayGamutChangedEventVtbl>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplayGamutChangedEventVtbl)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Acquire) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGamutChangedEventVtbl),
+            "::",
+            stringify!(Acquire)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Release) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGamutChangedEventVtbl),
+            "::",
+            stringify!(Release)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).QueryInterface) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGamutChangedEventVtbl),
+            "::",
+            stringify!(QueryInterface)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetOrigin) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGamutChangedEventVtbl),
+            "::",
+            stringify!(GetOrigin)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetDisplay) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGamutChangedEventVtbl),
+            "::",
+            stringify!(GetDisplay)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsWhitePointChanged) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGamutChangedEventVtbl),
+            "::",
+            stringify!(IsWhitePointChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsColorSpaceChanged) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGamutChangedEventVtbl),
+            "::",
+            stringify!(IsColorSpaceChanged)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayGamutChangedEvent {
+    pub pVtbl: *const IADLXDisplayGamutChangedEventVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayGamutChangedEvent() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayGamutChangedEvent> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayGamutChangedEvent>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplayGamutChangedEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayGamutChangedEvent>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplayGamutChangedEvent))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGamutChangedEvent),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayGamutChangedListenerVtbl {
+    pub OnDisplayGamutChanged: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayGamutChangedListener,
+            pDisplayGamutChangedEvent: *mut IADLXDisplayGamutChangedEvent,
+        ) -> adlx_bool,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayGamutChangedListenerVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayGamutChangedListenerVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayGamutChangedListenerVtbl>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(IADLXDisplayGamutChangedListenerVtbl)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayGamutChangedListenerVtbl>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplayGamutChangedListenerVtbl)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).OnDisplayGamutChanged) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGamutChangedListenerVtbl),
+            "::",
+            stringify!(OnDisplayGamutChanged)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayGamutChangedListener {
+    pub pVtbl: *const IADLXDisplayGamutChangedListenerVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayGamutChangedListener() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayGamutChangedListener> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayGamutChangedListener>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplayGamutChangedListener))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayGamutChangedListener>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplayGamutChangedListener)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGamutChangedListener),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayGammaChangedEventVtbl {
+    pub Acquire: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGammaChangedEvent) -> adlx_long,
+    >,
+    pub Release: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGammaChangedEvent) -> adlx_long,
+    >,
+    pub QueryInterface: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayGammaChangedEvent,
+            interfaceId: *const wchar_t,
+            ppInterface: *mut *mut ::std::os::raw::c_void,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetOrigin: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGammaChangedEvent) -> ADLX_SYNC_ORIGIN,
+    >,
+    pub GetDisplay: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayGammaChangedEvent,
+            ppDisplay: *mut *mut IADLXDisplay,
+        ) -> ADLX_RESULT,
+    >,
+    pub IsGammaRampChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGammaChangedEvent) -> adlx_bool,
+    >,
+    pub IsGammaCoefficientChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGammaChangedEvent) -> adlx_bool,
+    >,
+    pub IsReGammaChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGammaChangedEvent) -> adlx_bool,
+    >,
+    pub IsDeGammaChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayGammaChangedEvent) -> adlx_bool,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayGammaChangedEventVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayGammaChangedEventVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayGammaChangedEventVtbl>(),
+        72usize,
+        concat!("Size of: ", stringify!(IADLXDisplayGammaChangedEventVtbl))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayGammaChangedEventVtbl>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplayGammaChangedEventVtbl)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Acquire) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedEventVtbl),
+            "::",
+            stringify!(Acquire)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Release) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedEventVtbl),
+            "::",
+            stringify!(Release)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).QueryInterface) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedEventVtbl),
+            "::",
+            stringify!(QueryInterface)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetOrigin) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedEventVtbl),
+            "::",
+            stringify!(GetOrigin)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetDisplay) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedEventVtbl),
+            "::",
+            stringify!(GetDisplay)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsGammaRampChanged) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedEventVtbl),
+            "::",
+            stringify!(IsGammaRampChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsGammaCoefficientChanged) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedEventVtbl),
+            "::",
+            stringify!(IsGammaCoefficientChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsReGammaChanged) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedEventVtbl),
+            "::",
+            stringify!(IsReGammaChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsDeGammaChanged) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedEventVtbl),
+            "::",
+            stringify!(IsDeGammaChanged)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayGammaChangedEvent {
+    pub pVtbl: *const IADLXDisplayGammaChangedEventVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayGammaChangedEvent() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayGammaChangedEvent> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayGammaChangedEvent>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplayGammaChangedEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayGammaChangedEvent>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplayGammaChangedEvent))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedEvent),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayGammaChangedListenerVtbl {
+    pub OnDisplayGammaChanged: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayGammaChangedListener,
+            pDisplayGammaChangedEvent: *mut IADLXDisplayGammaChangedEvent,
+        ) -> adlx_bool,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayGammaChangedListenerVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayGammaChangedListenerVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayGammaChangedListenerVtbl>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(IADLXDisplayGammaChangedListenerVtbl)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayGammaChangedListenerVtbl>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplayGammaChangedListenerVtbl)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).OnDisplayGammaChanged) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedListenerVtbl),
+            "::",
+            stringify!(OnDisplayGammaChanged)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayGammaChangedListener {
+    pub pVtbl: *const IADLXDisplayGammaChangedListenerVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayGammaChangedListener() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayGammaChangedListener> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayGammaChangedListener>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplayGammaChangedListener))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayGammaChangedListener>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplayGammaChangedListener)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayGammaChangedListener),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplay3DLUTChangedEventVtbl {
+    pub Acquire: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplay3DLUTChangedEvent) -> adlx_long,
+    >,
+    pub Release: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplay3DLUTChangedEvent) -> adlx_long,
+    >,
+    pub QueryInterface: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay3DLUTChangedEvent,
+            interfaceId: *const wchar_t,
+            ppInterface: *mut *mut ::std::os::raw::c_void,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetOrigin: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplay3DLUTChangedEvent) -> ADLX_SYNC_ORIGIN,
+    >,
+    pub GetDisplay: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay3DLUTChangedEvent,
+            ppDisplay: *mut *mut IADLXDisplay,
+        ) -> ADLX_RESULT,
+    >,
+    pub IsSCEChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplay3DLUTChangedEvent) -> adlx_bool,
+    >,
+    pub IsCustom3DLUTChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplay3DLUTChangedEvent) -> adlx_bool,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplay3DLUTChangedEventVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplay3DLUTChangedEventVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplay3DLUTChangedEventVtbl>(),
+        56usize,
+        concat!("Size of: ", stringify!(IADLXDisplay3DLUTChangedEventVtbl))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplay3DLUTChangedEventVtbl>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplay3DLUTChangedEventVtbl)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Acquire) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay3DLUTChangedEventVtbl),
+            "::",
+            stringify!(Acquire)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Release) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay3DLUTChangedEventVtbl),
+            "::",
+            stringify!(Release)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).QueryInterface) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay3DLUTChangedEventVtbl),
+            "::",
+            stringify!(QueryInterface)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetOrigin) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay3DLUTChangedEventVtbl),
+            "::",
+            stringify!(GetOrigin)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetDisplay) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay3DLUTChangedEventVtbl),
+            "::",
+            stringify!(GetDisplay)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsSCEChanged) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay3DLUTChangedEventVtbl),
+            "::",
+            stringify!(IsSCEChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsCustom3DLUTChanged) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay3DLUTChangedEventVtbl),
+            "::",
+            stringify!(IsCustom3DLUTChanged)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplay3DLUTChangedEvent {
+    pub pVtbl: *const IADLXDisplay3DLUTChangedEventVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplay3DLUTChangedEvent() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplay3DLUTChangedEvent> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplay3DLUTChangedEvent>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplay3DLUTChangedEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplay3DLUTChangedEvent>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplay3DLUTChangedEvent))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay3DLUTChangedEvent),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplay3DLUTChangedListenerVtbl {
+    pub OnDisplay3DLUTChanged: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplay3DLUTChangedListener,
+            pDisplay3DLUTChangedEvent: *mut IADLXDisplay3DLUTChangedEvent,
+        ) -> adlx_bool,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplay3DLUTChangedListenerVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplay3DLUTChangedListenerVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplay3DLUTChangedListenerVtbl>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(IADLXDisplay3DLUTChangedListenerVtbl)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplay3DLUTChangedListenerVtbl>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplay3DLUTChangedListenerVtbl)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).OnDisplay3DLUTChanged) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay3DLUTChangedListenerVtbl),
+            "::",
+            stringify!(OnDisplay3DLUTChanged)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplay3DLUTChangedListener {
+    pub pVtbl: *const IADLXDisplay3DLUTChangedListenerVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplay3DLUTChangedListener() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplay3DLUTChangedListener> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplay3DLUTChangedListener>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplay3DLUTChangedListener))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplay3DLUTChangedListener>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplay3DLUTChangedListener)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplay3DLUTChangedListener),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplaySettingsChangedEventVtbl {
+    pub Acquire: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_long,
+    >,
+    pub Release: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_long,
+    >,
+    pub QueryInterface: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplaySettingsChangedEvent,
+            interfaceId: *const wchar_t,
+            ppInterface: *mut *mut ::std::os::raw::c_void,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetOrigin: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> ADLX_SYNC_ORIGIN,
+    >,
+    pub GetDisplay: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplaySettingsChangedEvent,
+            ppDisplay: *mut *mut IADLXDisplay,
+        ) -> ADLX_RESULT,
+    >,
+    pub IsFreeSyncChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsVSRChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsGPUScalingChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsScalingModeChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsIntegerScalingChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsColorDepthChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsPixelFormatChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsHDCPChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsCustomColorHueChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsCustomColorSaturationChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsCustomColorBrightnessChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsCustomColorTemperatureChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsCustomColorContrastChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsCustomResolutionChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+    pub IsVariBrightChanged: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplaySettingsChangedEvent) -> adlx_bool,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplaySettingsChangedEventVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplaySettingsChangedEventVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplaySettingsChangedEventVtbl>(),
+        160usize,
+        concat!(
+            "Size of: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplaySettingsChangedEventVtbl>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Acquire) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(Acquire)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Release) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(Release)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).QueryInterface) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(QueryInterface)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetOrigin) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(GetOrigin)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetDisplay) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(GetDisplay)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsFreeSyncChanged) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsFreeSyncChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsVSRChanged) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsVSRChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsGPUScalingChanged) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsGPUScalingChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsScalingModeChanged) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsScalingModeChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsIntegerScalingChanged) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsIntegerScalingChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsColorDepthChanged) as usize - ptr as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsColorDepthChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsPixelFormatChanged) as usize - ptr as usize },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsPixelFormatChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsHDCPChanged) as usize - ptr as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsHDCPChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsCustomColorHueChanged) as usize - ptr as usize },
+        104usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsCustomColorHueChanged)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).IsCustomColorSaturationChanged) as usize - ptr as usize
+        },
+        112usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsCustomColorSaturationChanged)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).IsCustomColorBrightnessChanged) as usize - ptr as usize
+        },
+        120usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsCustomColorBrightnessChanged)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).IsCustomColorTemperatureChanged) as usize - ptr as usize
+        },
+        128usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsCustomColorTemperatureChanged)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).IsCustomColorContrastChanged) as usize - ptr as usize
+        },
+        136usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsCustomColorContrastChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsCustomResolutionChanged) as usize - ptr as usize },
+        144usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsCustomResolutionChanged)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).IsVariBrightChanged) as usize - ptr as usize },
+        152usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEventVtbl),
+            "::",
+            stringify!(IsVariBrightChanged)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplaySettingsChangedEvent {
+    pub pVtbl: *const IADLXDisplaySettingsChangedEventVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplaySettingsChangedEvent() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplaySettingsChangedEvent> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplaySettingsChangedEvent>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplaySettingsChangedEvent))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplaySettingsChangedEvent>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplaySettingsChangedEvent)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedEvent),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplaySettingsChangedListenerVtbl {
+    pub OnDisplaySettingsChanged: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplaySettingsChangedListener,
+            pDisplaySettingChangedEvent: *mut IADLXDisplaySettingsChangedEvent,
+        ) -> adlx_bool,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplaySettingsChangedListenerVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplaySettingsChangedListenerVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplaySettingsChangedListenerVtbl>(),
+        8usize,
+        concat!(
+            "Size of: ",
+            stringify!(IADLXDisplaySettingsChangedListenerVtbl)
+        )
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplaySettingsChangedListenerVtbl>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplaySettingsChangedListenerVtbl)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).OnDisplaySettingsChanged) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedListenerVtbl),
+            "::",
+            stringify!(OnDisplaySettingsChanged)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplaySettingsChangedListener {
+    pub pVtbl: *const IADLXDisplaySettingsChangedListenerVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplaySettingsChangedListener() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplaySettingsChangedListener> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplaySettingsChangedListener>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplaySettingsChangedListener))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplaySettingsChangedListener>(),
+        8usize,
+        concat!(
+            "Alignment of ",
+            stringify!(IADLXDisplaySettingsChangedListener)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplaySettingsChangedListener),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayChangedHandlingVtbl {
+    pub Acquire: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayChangedHandling) -> adlx_long,
+    >,
+    pub Release: ::std::option::Option<
+        unsafe extern "C" fn(pThis: *mut IADLXDisplayChangedHandling) -> adlx_long,
+    >,
+    pub QueryInterface: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            interfaceId: *const wchar_t,
+            ppInterface: *mut *mut ::std::os::raw::c_void,
+        ) -> ADLX_RESULT,
+    >,
+    pub AddDisplayListEventListener: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            pDisplayListChangedListener: *mut IADLXDisplayListChangedListener,
+        ) -> ADLX_RESULT,
+    >,
+    pub RemoveDisplayListEventListener: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            pDisplayListChangedListener: *mut IADLXDisplayListChangedListener,
+        ) -> ADLX_RESULT,
+    >,
+    pub AddDisplayGamutEventListener: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            pDisplayGamutChangedListener: *mut IADLXDisplayGamutChangedListener,
+        ) -> ADLX_RESULT,
+    >,
+    pub RemoveDisplayGamutEventListener: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            pDisplayGamutChangedListener: *mut IADLXDisplayGamutChangedListener,
+        ) -> ADLX_RESULT,
+    >,
+    pub AddDisplayGammaEventListener: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            pDisplayGammaChangedListener: *mut IADLXDisplayGammaChangedListener,
+        ) -> ADLX_RESULT,
+    >,
+    pub RemoveDisplayGammaEventListener: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            pDisplayGammaChangedListener: *mut IADLXDisplayGammaChangedListener,
+        ) -> ADLX_RESULT,
+    >,
+    pub AddDisplay3DLUTEventListener: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            pDisplay3DLUTChangedListener: *mut IADLXDisplay3DLUTChangedListener,
+        ) -> ADLX_RESULT,
+    >,
+    pub RemoveDisplay3DLUTEventListener: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            pDisplay3DLUTChangedListener: *mut IADLXDisplay3DLUTChangedListener,
+        ) -> ADLX_RESULT,
+    >,
+    pub AddDisplaySettingsEventListener: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            pDisplaySettingsChangedListener: *mut IADLXDisplaySettingsChangedListener,
+        ) -> ADLX_RESULT,
+    >,
+    pub RemoveDisplaySettingsEventListener: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayChangedHandling,
+            pDisplaySettingsChangedListener: *mut IADLXDisplaySettingsChangedListener,
+        ) -> ADLX_RESULT,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayChangedHandlingVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayChangedHandlingVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayChangedHandlingVtbl>(),
+        104usize,
+        concat!("Size of: ", stringify!(IADLXDisplayChangedHandlingVtbl))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayChangedHandlingVtbl>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplayChangedHandlingVtbl))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Acquire) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(Acquire)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Release) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(Release)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).QueryInterface) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(QueryInterface)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).AddDisplayListEventListener) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(AddDisplayListEventListener)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).RemoveDisplayListEventListener) as usize - ptr as usize
+        },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(RemoveDisplayListEventListener)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).AddDisplayGamutEventListener) as usize - ptr as usize
+        },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(AddDisplayGamutEventListener)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).RemoveDisplayGamutEventListener) as usize - ptr as usize
+        },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(RemoveDisplayGamutEventListener)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).AddDisplayGammaEventListener) as usize - ptr as usize
+        },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(AddDisplayGammaEventListener)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).RemoveDisplayGammaEventListener) as usize - ptr as usize
+        },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(RemoveDisplayGammaEventListener)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).AddDisplay3DLUTEventListener) as usize - ptr as usize
+        },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(AddDisplay3DLUTEventListener)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).RemoveDisplay3DLUTEventListener) as usize - ptr as usize
+        },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(RemoveDisplay3DLUTEventListener)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).AddDisplaySettingsEventListener) as usize - ptr as usize
+        },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(AddDisplaySettingsEventListener)
+        )
+    );
+    assert_eq!(
+        unsafe {
+            ::std::ptr::addr_of!((*ptr).RemoveDisplaySettingsEventListener) as usize - ptr as usize
+        },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandlingVtbl),
+            "::",
+            stringify!(RemoveDisplaySettingsEventListener)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayChangedHandling {
+    pub pVtbl: *const IADLXDisplayChangedHandlingVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayChangedHandling() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayChangedHandling> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayChangedHandling>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplayChangedHandling))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayChangedHandling>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplayChangedHandling))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayChangedHandling),
+            "::",
+            stringify!(pVtbl)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayServicesVtbl {
+    pub Acquire:
+        ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplayServices) -> adlx_long>,
+    pub Release:
+        ::std::option::Option<unsafe extern "C" fn(pThis: *mut IADLXDisplayServices) -> adlx_long>,
+    pub QueryInterface: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            interfaceId: *const wchar_t,
+            ppInterface: *mut *mut ::std::os::raw::c_void,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetNumberOfDisplays: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            numDisplays: *mut adlx_uint,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetDisplays: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            ppDisplays: *mut *mut IADLXDisplayList,
+        ) -> ADLX_RESULT,
+    >,
+    pub Get3DLUT: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppDisp3DLUT: *mut *mut IADLXDisplay3DLUT,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetGamut: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppDispGamut: *mut *mut IADLXDisplayGamut,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetGamma: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppDispGamma: *mut *mut IADLXDisplayGamma,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetDisplayChangedHandling: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            ppDisplayChangedHandling: *mut *mut IADLXDisplayChangedHandling,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetFreeSync: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppFreeSync: *mut *mut IADLXDisplayFreeSync,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetVirtualSuperResolution: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppVSR: *mut *mut IADLXDisplayVSR,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetGPUScaling: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppGPUScaling: *mut *mut IADLXDisplayGPUScaling,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetScalingMode: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppScalingMode: *mut *mut IADLXDisplayScalingMode,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetIntegerScaling: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppIntegerScaling: *mut *mut IADLXDisplayIntegerScaling,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetColorDepth: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppColorDepth: *mut *mut IADLXDisplayColorDepth,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetPixelFormat: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppPixelFormat: *mut *mut IADLXDisplayPixelFormat,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetCustomColor: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppCustomColor: *mut *mut IADLXDisplayCustomColor,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetHDCP: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppHDCP: *mut *mut IADLXDisplayHDCP,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetCustomResolution: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppCustomResolution: *mut *mut IADLXDisplayCustomResolution,
+        ) -> ADLX_RESULT,
+    >,
+    pub GetVariBright: ::std::option::Option<
+        unsafe extern "C" fn(
+            pThis: *mut IADLXDisplayServices,
+            pDisplay: *mut IADLXDisplay,
+            ppVariBright: *mut *mut IADLXDisplayVariBright,
+        ) -> ADLX_RESULT,
+    >,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayServicesVtbl() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayServicesVtbl> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayServicesVtbl>(),
+        160usize,
+        concat!("Size of: ", stringify!(IADLXDisplayServicesVtbl))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayServicesVtbl>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplayServicesVtbl))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Acquire) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(Acquire)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Release) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(Release)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).QueryInterface) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(QueryInterface)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetNumberOfDisplays) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetNumberOfDisplays)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetDisplays) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetDisplays)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).Get3DLUT) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(Get3DLUT)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetGamut) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetGamut)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetGamma) as usize - ptr as usize },
+        56usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetGamma)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetDisplayChangedHandling) as usize - ptr as usize },
+        64usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetDisplayChangedHandling)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetFreeSync) as usize - ptr as usize },
+        72usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetFreeSync)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetVirtualSuperResolution) as usize - ptr as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetVirtualSuperResolution)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetGPUScaling) as usize - ptr as usize },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetGPUScaling)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetScalingMode) as usize - ptr as usize },
+        96usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetScalingMode)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetIntegerScaling) as usize - ptr as usize },
+        104usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetIntegerScaling)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetColorDepth) as usize - ptr as usize },
+        112usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetColorDepth)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetPixelFormat) as usize - ptr as usize },
+        120usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetPixelFormat)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetCustomColor) as usize - ptr as usize },
+        128usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetCustomColor)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetHDCP) as usize - ptr as usize },
+        136usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetHDCP)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetCustomResolution) as usize - ptr as usize },
+        144usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetCustomResolution)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).GetVariBright) as usize - ptr as usize },
+        152usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServicesVtbl),
+            "::",
+            stringify!(GetVariBright)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct IADLXDisplayServices {
+    pub pVtbl: *const IADLXDisplayServicesVtbl,
+}
+#[test]
+fn bindgen_test_layout_IADLXDisplayServices() {
+    const UNINIT: ::std::mem::MaybeUninit<IADLXDisplayServices> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<IADLXDisplayServices>(),
+        8usize,
+        concat!("Size of: ", stringify!(IADLXDisplayServices))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<IADLXDisplayServices>(),
+        8usize,
+        concat!("Alignment of ", stringify!(IADLXDisplayServices))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).pVtbl) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(IADLXDisplayServices),
             "::",
             stringify!(pVtbl)
         )

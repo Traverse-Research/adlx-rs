@@ -6,7 +6,7 @@ use super::{
     interface::{Interface, InterfaceImpl},
     performance_monitoring_services::PerformanceMonitoringServices,
     result::{Error, Result},
-    ThreeDSettingsServices,
+    DisplaysServices, ThreeDSettingsServices,
 };
 
 /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_system/>
@@ -71,13 +71,15 @@ impl System {
         };
         Error::from_result(result).map(|()| unsafe { I::from_raw(interface.assume_init().cast()) })
     }
-    // #[doc(alias = "GetDisplaysServices")]
-    // pub fn GetDisplaysServices(&self) -> Result<()> {
-    //     let result = unsafe { (self.vtable().GetDisplaysServices.unwrap())(self.0) };
-    //     Error::from_result(result)?;
-
-    //     Ok(())
-    // }
+    #[doc(alias = "GetDisplaysServices")]
+    pub fn get_displays_services(&self) -> Result<DisplaysServices> {
+        let mut displays_services = MaybeUninit::uninit();
+        let result = unsafe {
+            (self.vtable().GetDisplaysServices.unwrap())(self.0, displays_services.as_mut_ptr())
+        };
+        Error::from_result_with_assume_init_on_success(result, displays_services)
+            .map(|displays_services| unsafe { DisplaysServices::from_raw(displays_services) })
+    }
     // #[doc(alias = "GetDesktopsServices")]
     // pub fn GetDesktopsServices(&self) -> Result<()> {
     //     let result = unsafe { (self.vtable().GetDesktopsServices.unwrap())(self.0) };

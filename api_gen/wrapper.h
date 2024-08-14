@@ -6,3 +6,4 @@
 #include <IPerformanceMonitoring1.h>
 #include <I3DSettings.h>
 #include <IDisplaySettings.h>
+#include <IDisplays.h>
