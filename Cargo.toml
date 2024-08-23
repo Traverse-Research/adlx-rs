@@ -23,5 +23,4 @@ members = [
 ]
 
 [features]
-default = ["windows_rs"]
 windows_rs = ["dep:windows"]

@@ -1,7 +1,11 @@
 use std::{ffi::CStr, mem::MaybeUninit, ops::Deref};
 
 #[cfg(windows)]
-#[cfg(windows_rs)]
+#[cfg(feature = "windows_rs")]
+use std::ffi::CString;
+
+#[cfg(windows)]
+#[cfg(feature = "windows_rs")]
 use windows::{
     core::{s, PCSTR},
     Wdk::Graphics::Direct3D::{
@@ -10,7 +14,7 @@ use windows::{
         PFND3DKMT_QUERYADAPTERINFO,
     },
     Win32::{
-        Foundation::{FreeLibrary, E_FAIL, HMODULE, LUID},
+        Foundation::{FreeLibrary, HMODULE, LUID},
         System::LibraryLoader::{GetProcAddress, LoadLibraryA},
     },
 };
@@ -161,7 +165,7 @@ impl Gpu {
         Error::from_result_with_assume_init_on_success(result, x)
     }
     #[cfg(windows)]
-    #[cfg(windows_rs)]
+    #[cfg(feature = "windows_rs")]
     pub fn luid(&self) -> Option<LUID> {
         let unique_id = self.unique_id().ok()? as u32;
 
@@ -209,15 +213,15 @@ impl Gpu {
                         std::mem::size_of::<D3DKMT_ADAPTERADDRESS>() as u32;
 
                     let status = d3dkmt_query_adapter_info.unwrap()(&mut query_info);
-                    if status.is_ok() {
-                        if adapter_address.BusNumber == pci_bus as u32
-                            && adapter_address.DeviceNumber == pci_device_id as u32
-                            && adapter_address.FunctionNumber == pci_device_function as u32
-                        {
-                            adapter_luid = adapter.AdapterLuid;
-                            found = true;
-                            break;
-                        }
+
+                    if status.is_ok()
+                        && adapter_address.BusNumber == pci_bus
+                        && adapter_address.DeviceNumber == pci_device_id
+                        && adapter_address.FunctionNumber == pci_device_function
+                    {
+                        adapter_luid = adapter.AdapterLuid;
+                        found = true;
+                        break;
                     }
                 }
 
@@ -239,17 +243,17 @@ impl Gpu {
 }
 
 #[cfg(windows)]
-#[cfg(windows_rs)]
+#[cfg(feature = "windows_rs")]
 struct ExternalDll {
     dll: Option<HMODULE>,
 }
 
 #[cfg(windows)]
-#[cfg(windows_rs)]
+#[cfg(feature = "windows_rs")]
 impl ExternalDll {
     pub fn new(name: &'static str) -> Self {
         if let Ok(c_string) = CString::new(name) {
-            let pcstr: PCSTR = PCSTR(unsafe { c_string.as_ptr() as *const u8 });
+            let pcstr: PCSTR = PCSTR(c_string.as_ptr() as *const u8);
             let dll = unsafe { LoadLibraryA(pcstr).ok() };
             Self { dll }
         } else {
@@ -263,11 +267,13 @@ impl ExternalDll {
 }
 
 #[cfg(windows)]
-#[cfg(windows_rs)]
+#[cfg(feature = "windows_rs")]
 impl Drop for ExternalDll {
     fn drop(&mut self) {
         if let Some(dll) = self.dll.take() {
-            unsafe { FreeLibrary(dll) };
+            unsafe {
+                let _ = FreeLibrary(dll);
+            }
         }
     }
 }
