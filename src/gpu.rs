@@ -1,5 +1,20 @@
 use std::{ffi::CStr, mem::MaybeUninit, ops::Deref};
 
+#[cfg(windows)]
+#[cfg(windows_rs)]
+use windows::{
+    core::{s, PCSTR},
+    Wdk::Graphics::Direct3D::{
+        D3DKMT_ADAPTERADDRESS, D3DKMT_CLOSEADAPTER, D3DKMT_ENUMADAPTERS, D3DKMT_QUERYADAPTERINFO,
+        KMTQAITYPE_ADAPTERADDRESS, PFND3DKMT_CLOSEADAPTER, PFND3DKMT_ENUMADAPTERS,
+        PFND3DKMT_QUERYADAPTERINFO,
+    },
+    Win32::{
+        Foundation::{FreeLibrary, E_FAIL, HMODULE, LUID},
+        System::LibraryLoader::{GetProcAddress, LoadLibraryA},
+    },
+};
+
 use super::{
     ffi,
     interface::{Interface, InterfaceImpl},
@@ -144,6 +159,116 @@ impl Gpu {
         let result = unsafe { (self.vtable().UniqueId.unwrap())(self.as_raw(), x.as_mut_ptr()) };
 
         Error::from_result_with_assume_init_on_success(result, x)
+    }
+    #[cfg(windows)]
+    #[cfg(windows_rs)]
+    pub fn luid(&self) -> Option<LUID> {
+        let unique_id = self.unique_id().ok()? as u32;
+
+        let pci_bus: u32 = (unique_id >> 8) & 0xFF;
+        let pci_device_id: u32 = (unique_id >> 3) & 0x1F;
+        let pci_device_function = unique_id & 0x07;
+
+        let gdi32 = ExternalDll::new("gdi32.dll");
+        if let Some(gdi32) = gdi32.get() {
+            unsafe {
+                let d3dkmt_enum_adapters: PFND3DKMT_ENUMADAPTERS =
+                    std::mem::transmute(GetProcAddress(gdi32, s!("D3DKMTEnumAdapters")));
+                let d3dkmt_query_adapter_info: PFND3DKMT_QUERYADAPTERINFO =
+                    std::mem::transmute(GetProcAddress(gdi32, s!("D3DKMTQueryAdapterInfo")));
+                let d3dkmt_close_adapter: PFND3DKMT_CLOSEADAPTER =
+                    std::mem::transmute(GetProcAddress(gdi32, s!("D3DKMTCloseAdapter")));
+
+                if d3dkmt_enum_adapters.is_none()
+                    || d3dkmt_query_adapter_info.is_none()
+                    || d3dkmt_close_adapter.is_none()
+                {
+                    return None;
+                }
+
+                let mut adapter_list = D3DKMT_ENUMADAPTERS::default();
+                let status = d3dkmt_enum_adapters.unwrap()(&mut adapter_list);
+                if !status.is_ok() {
+                    return None;
+                }
+
+                let mut adapter_luid = LUID::default();
+                let mut found = false;
+
+                for adapter in &adapter_list.Adapters[0..adapter_list.NumAdapters as usize] {
+                    let mut query_info = D3DKMT_QUERYADAPTERINFO {
+                        hAdapter: adapter.hAdapter,
+                        Type: KMTQAITYPE_ADAPTERADDRESS,
+                        pPrivateDriverData: std::ptr::null_mut(),
+                        PrivateDriverDataSize: 0,
+                    };
+
+                    let mut adapter_address = D3DKMT_ADAPTERADDRESS::default();
+                    query_info.pPrivateDriverData = &mut adapter_address as *mut _ as *mut _;
+                    query_info.PrivateDriverDataSize =
+                        std::mem::size_of::<D3DKMT_ADAPTERADDRESS>() as u32;
+
+                    let status = d3dkmt_query_adapter_info.unwrap()(&mut query_info);
+                    if status.is_ok() {
+                        if adapter_address.BusNumber == pci_bus as u32
+                            && adapter_address.DeviceNumber == pci_device_id as u32
+                            && adapter_address.FunctionNumber == pci_device_function as u32
+                        {
+                            adapter_luid = adapter.AdapterLuid;
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                for adapter in &adapter_list.Adapters[0..adapter_list.NumAdapters as usize] {
+                    let mut close_adapter = D3DKMT_CLOSEADAPTER {
+                        hAdapter: adapter.hAdapter,
+                    };
+                    let _ = d3dkmt_close_adapter.unwrap()(&mut close_adapter);
+                }
+
+                if found {
+                    return Some(adapter_luid);
+                }
+            }
+        }
+
+        None
+    }
+}
+
+#[cfg(windows)]
+#[cfg(windows_rs)]
+struct ExternalDll {
+    dll: Option<HMODULE>,
+}
+
+#[cfg(windows)]
+#[cfg(windows_rs)]
+impl ExternalDll {
+    pub fn new(name: &'static str) -> Self {
+        if let Ok(c_string) = CString::new(name) {
+            let pcstr: PCSTR = PCSTR(unsafe { c_string.as_ptr() as *const u8 });
+            let dll = unsafe { LoadLibraryA(pcstr).ok() };
+            Self { dll }
+        } else {
+            Self { dll: None }
+        }
+    }
+
+    pub fn get(&self) -> Option<HMODULE> {
+        self.dll
+    }
+}
+
+#[cfg(windows)]
+#[cfg(windows_rs)]
+impl Drop for ExternalDll {
+    fn drop(&mut self) {
+        if let Some(dll) = self.dll.take() {
+            unsafe { FreeLibrary(dll) };
+        }
     }
 }
 
