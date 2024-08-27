@@ -8,10 +8,12 @@
 )]
 pub mod ffi;
 
+pub mod chill;
 pub mod display;
 pub mod display_free_sync;
 pub mod display_list;
 pub mod displays_services;
+pub mod frtc;
 pub mod gpu;
 pub mod gpu_list;
 pub mod gpu_metrics;
