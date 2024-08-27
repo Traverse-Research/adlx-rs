@@ -39,7 +39,8 @@ impl GpuList {
         Error::from_result_with_assume_init_on_success(result, gpu)
             .map(|gpu| unsafe { Gpu::from_raw(gpu) })
     }
-    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list__add__back/#doxid-d-o-x-i-a-d-l-x-g-p-u-list-add-back>
+
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list__add__back/>
     #[doc(alias = "Add_Back_GPUList")]
     // TODO(Marijn): This API does not allow moves of derivatives, such as Gpu1.
     pub fn add_back(&self, gpu: Gpu) -> Result<()> {

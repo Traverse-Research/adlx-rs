@@ -8,6 +8,7 @@ use super::{
     three_d_wait_for_vertical_refresh::ThreeDWaitForVerticalRefresh,
 };
 
+/// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x3_d_settings_services/>
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLX3DSettingsServices")]
@@ -20,6 +21,8 @@ unsafe impl Interface for ThreeDSettingsServices {
 }
 
 impl ThreeDSettingsServices {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x3_d_settings_services__get_wait_for_vertical_refresh/>
+    #[doc(alias = "GetWaitForVerticalRefresh")]
     pub fn get_wait_for_vertical_refresh(&self, gpu: &Gpu) -> Result<ThreeDWaitForVerticalRefresh> {
         let mut wait_for_vertical_refresh = MaybeUninit::uninit();
         let result = unsafe {
