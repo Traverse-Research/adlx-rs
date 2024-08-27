@@ -39,7 +39,7 @@ impl Chill {
         let result =
             unsafe { (self.vtable().GetFPSRange.unwrap())(self.as_raw(), fps_range.as_mut_ptr()) };
 
-        Error::from_result_with_assume_init_on_success(result, fps_range).map(|fps_range| fps_range)
+        Error::from_result_with_assume_init_on_success(result, fps_range)
     }
 
     pub fn get_min_fps(&self) -> Result<ffi::adlx_int> {
@@ -47,7 +47,7 @@ impl Chill {
         let result =
             unsafe { (self.vtable().GetMinFPS.unwrap())(self.as_raw(), min_fps.as_mut_ptr()) };
 
-        Error::from_result_with_assume_init_on_success(result, min_fps).map(|min_fps| min_fps)
+        Error::from_result_with_assume_init_on_success(result, min_fps)
     }
 
     pub fn get_max_fps(&self) -> Result<ffi::adlx_int> {
@@ -55,6 +55,6 @@ impl Chill {
         let result =
             unsafe { (self.vtable().GetMaxFPS.unwrap())(self.as_raw(), max_fps.as_mut_ptr()) };
 
-        Error::from_result_with_assume_init_on_success(result, max_fps).map(|max_fps| max_fps)
+        Error::from_result_with_assume_init_on_success(result, max_fps)
     }
 }
