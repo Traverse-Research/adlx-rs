@@ -39,13 +39,13 @@ impl FrameRateTargetControl {
         let result =
             unsafe { (self.vtable().GetFPSRange.unwrap())(self.as_raw(), fps_range.as_mut_ptr()) };
 
-        Error::from_result_with_assume_init_on_success(result, fps_range).map(|fps_range| fps_range)
+        Error::from_result_with_assume_init_on_success(result, fps_range)
     }
 
     pub fn get_fps(&self) -> Result<ffi::adlx_int> {
         let mut fps = MaybeUninit::uninit();
         let result = unsafe { (self.vtable().GetFPS.unwrap())(self.as_raw(), fps.as_mut_ptr()) };
 
-        Error::from_result_with_assume_init_on_success(result, fps).map(|fps| fps)
+        Error::from_result_with_assume_init_on_success(result, fps)
     }
 }
