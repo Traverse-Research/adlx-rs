@@ -1,5 +1,7 @@
 use std::mem::MaybeUninit;
 
+use crate::{chill::Chill, frtc::FrameRateTargetControl};
+
 use super::{
     ffi,
     gpu::Gpu,
@@ -34,5 +36,27 @@ impl ThreeDSettingsServices {
                 ThreeDWaitForVerticalRefresh::from_raw(wait_for_vertical_refresh)
             },
         )
+    }
+
+    pub fn get_chill(&self, gpu: &Gpu) -> Result<Chill> {
+        let mut chill = MaybeUninit::uninit();
+        let result = unsafe {
+            (self.vtable().GetChill.unwrap())(self.as_raw(), gpu.as_raw(), chill.as_mut_ptr())
+        };
+        Error::from_result_with_assume_init_on_success(result, chill)
+            .map(|chill| unsafe { Chill::from_raw(chill) })
+    }
+
+    pub fn get_frame_rate_target_control(&self, gpu: &Gpu) -> Result<FrameRateTargetControl> {
+        let mut frtc = MaybeUninit::uninit();
+        let result = unsafe {
+            (self.vtable().GetFrameRateTargetControl.unwrap())(
+                self.as_raw(),
+                gpu.as_raw(),
+                frtc.as_mut_ptr(),
+            )
+        };
+        Error::from_result_with_assume_init_on_success(result, frtc)
+            .map(|frtc| unsafe { FrameRateTargetControl::from_raw(frtc) })
     }
 }
