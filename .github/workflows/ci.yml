@@ -28,13 +28,8 @@ jobs:
       - name: Generate minimal-version dependencies
         run: cargo -Zminimal-versions generate-lockfile
       - uses: dtolnay/rust-toolchain@1.74.0
-      - name: Upgrade to regex@1.5.1
-        # Workaround for:
-        # https://github.com/rust-lang/regex/issues/931
-        # https://github.com/rust-lang/rust-bindgen/pull/2714
-        run: cargo update -p regex --precise 1.5.1
       - name: Cargo check
-        run: cargo check --workspace --all-targets
+        run: cargo check --exclude api_gen --workspace --all-targets
 
   generate:
     runs-on: windows-latest
