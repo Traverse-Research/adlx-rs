@@ -48,7 +48,7 @@ pub struct DisplayIterator<'a> {
     i: u32,
 }
 
-impl<'a> Iterator for DisplayIterator<'a> {
+impl Iterator for DisplayIterator<'_> {
     type Item = Display;
 
     fn next(&mut self) -> Option<Self::Item> {
