@@ -1,6 +1,6 @@
 [package]
 name = "adlx"
-version = "0.0.0-alpha.1"
+version = "0.0.0-alpha.1+1.4"
 authors = ["Traverse Research <support@traverseresearch.nl>"]
 edition = "2021"
 license = "MIT"

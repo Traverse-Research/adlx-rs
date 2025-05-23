@@ -7,3 +7,4 @@
 #include <I3DSettings.h>
 #include <IDisplaySettings.h>
 #include <IDisplays.h>
+#include <ISystem2.h>
