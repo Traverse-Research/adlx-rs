@@ -1,12 +1,12 @@
 use std::mem::MaybeUninit;
 
-use crate::{chill::Chill, frtc::FrameRateTargetControl};
-
 use super::{
     ffi,
     gpu::Gpu,
     interface::{Interface, InterfaceImpl},
     result::{Error, Result},
+    three_d_chill::ThreeDChill,
+    three_d_frame_rate_target_control::ThreeDFrameRateTargetControl,
     three_d_wait_for_vertical_refresh::ThreeDWaitForVerticalRefresh,
 };
 
@@ -38,16 +38,20 @@ impl ThreeDSettingsServices {
         )
     }
 
-    pub fn get_chill(&self, gpu: &Gpu) -> Result<Chill> {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x3_d_settings_services__get_chill/>
+    #[doc(alias = "GetChill")]
+    pub fn get_chill(&self, gpu: &Gpu) -> Result<ThreeDChill> {
         let mut chill = MaybeUninit::uninit();
         let result = unsafe {
             (self.vtable().GetChill.unwrap())(self.as_raw(), gpu.as_raw(), chill.as_mut_ptr())
         };
         Error::from_result_with_assume_init_on_success(result, chill)
-            .map(|chill| unsafe { Chill::from_raw(chill) })
+            .map(|chill| unsafe { ThreeDChill::from_raw(chill) })
     }
 
-    pub fn get_frame_rate_target_control(&self, gpu: &Gpu) -> Result<FrameRateTargetControl> {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x3_d_settings_services__get_frame_rate_target_control/>
+    #[doc(alias = "GetFrameRateTargetControl")]
+    pub fn get_frame_rate_target_control(&self, gpu: &Gpu) -> Result<ThreeDFrameRateTargetControl> {
         let mut frtc = MaybeUninit::uninit();
         let result = unsafe {
             (self.vtable().GetFrameRateTargetControl.unwrap())(
@@ -57,6 +61,6 @@ impl ThreeDSettingsServices {
             )
         };
         Error::from_result_with_assume_init_on_success(result, frtc)
-            .map(|frtc| unsafe { FrameRateTargetControl::from_raw(frtc) })
+            .map(|frtc| unsafe { ThreeDFrameRateTargetControl::from_raw(frtc) })
     }
 }
