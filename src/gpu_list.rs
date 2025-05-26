@@ -60,7 +60,7 @@ pub struct GpuIterator<'a> {
     i: u32,
 }
 
-impl<'a> Iterator for GpuIterator<'a> {
+impl Iterator for GpuIterator<'_> {
     type Item = Gpu;
 
     fn next(&mut self) -> Option<Self::Item> {

@@ -20,7 +20,7 @@ jobs:
         run: cargo doc --all --all-features
 
   rust-msrv:
-    name: Build-test MSRV (1.74) with minal crate dependencies
+    name: Build-test MSRV (1.74) with minimal crate dependencies
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4

@@ -10,6 +10,7 @@ description = "Bindings for AMD's Device Library eXtra"
 include = ["src", "LICENSE"]
 categories = ["api-bindings", "external-ffi-bindings", "graphics"] # https://crates.io/category_slugs
 keywords = ["amd", "adlx", "gpu"]
+rust-version = "1.74"
 
 [dependencies]
 anyhow = "1.0.79"
