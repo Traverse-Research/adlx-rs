@@ -1,4 +1,4 @@
-use std::{ffi::CStr, mem::MaybeUninit, ops::Deref};
+use std::{ffi::CStr, fmt, mem::MaybeUninit, ops::Deref};
 
 use super::{
     ffi,
@@ -145,6 +145,25 @@ impl Gpu {
 
         Error::from_result_with_assume_init_on_success(result, x)
     }
+
+    /// Returns the PCI address (bus, device and function) extracted from [`Self::unique_id()`].  It
+    /// is unknown under which circumstances this is valid.
+    ///
+    /// This is an alternative to calling [`ffi::IADLMappingVtbl::BdfFromADLXGPU`], which requires
+    /// the ADL library to be present and loaded.
+    pub fn pci_address_from_unique_id(&self) -> Option<PciAddress> {
+        let unique_id = self.unique_id().ok()? as u32;
+
+        let bus = (unique_id >> 8) & 0xFF;
+        let device = (unique_id >> 3) & 0x1F;
+        let function = unique_id & 0x07;
+
+        Some(PciAddress {
+            bus,
+            device,
+            function,
+        })
+    }
 }
 
 // TODO(Marijn): Test inheritance!
@@ -207,5 +226,25 @@ impl Gpu1 {
 
         Error::from_result_with_assume_init_on_success(result, product_name)
             .map(|name| unsafe { CStr::from_ptr(name) }.to_str().unwrap())
+    }
+}
+
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+#[doc(alias = "BDF")]
+pub struct PciAddress {
+    pub bus: u32,
+    pub device: u32,
+    pub function: u32,
+}
+
+impl fmt::Display for PciAddress {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:02}:{:02}.{}", self.bus, self.device, self.function,)
+    }
+}
+
+impl fmt::Debug for PciAddress {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "PCI address {}", self)
     }
 }
