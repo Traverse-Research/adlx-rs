@@ -16,7 +16,7 @@ unsafe impl Interface for List {
 }
 
 impl List {
-    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_list__size/#doxid-d-o-x-i-a-d-l-x-list-size>
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_list__size/>
     #[doc(alias = "Size")]
     pub fn size(&self) -> u32 {
         unsafe { (self.vtable().Size.unwrap())(self.as_raw()) }

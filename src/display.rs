@@ -7,6 +7,7 @@ use super::{
     Gpu,
 };
 
+/// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_display/>
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXDisplay")]
@@ -19,6 +20,8 @@ unsafe impl Interface for Display {
 }
 
 impl Display {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_display__get_g_p_u/>
+    #[doc(alias = "GetGPU")]
     pub fn get_gpu(&self) -> Result<Gpu> {
         let mut gpu = MaybeUninit::uninit();
         let result = unsafe { (self.vtable().GetGPU.unwrap())(self.as_raw(), gpu.as_mut_ptr()) };

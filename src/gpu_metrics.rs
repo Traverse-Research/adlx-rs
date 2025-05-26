@@ -7,6 +7,7 @@ use super::{
     result::{Error, Result},
 };
 
+/// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_metrics/>
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXGPUMetrics")]
@@ -142,6 +143,7 @@ impl GpuMetrics {
     }
 }
 
+/// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_metrics_list/>
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXGPUMetricsList")]
@@ -168,7 +170,8 @@ impl GpuMetricsList {
         Error::from_result_with_assume_init_on_success(result, metrics)
             .map(|metrics| unsafe { GpuMetrics::from_raw(metrics) })
     }
-    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list__add__back/#doxid-d-o-x-i-a-d-l-x-g-p-u-list-add-back>
+
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u_list__add__back/>
     #[doc(alias = "Add_Back_GPUMetricsList")]
     pub fn add_back(&self, gpu_metrics: GpuMetrics) -> Result<()> {
         let result = unsafe {

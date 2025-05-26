@@ -6,6 +6,7 @@ use super::{
     result::{Error, Result},
 };
 
+/// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_display_free_sync/>
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXDisplayFreeSync")]
@@ -18,6 +19,8 @@ unsafe impl Interface for DisplayFreeSync {
 }
 
 impl DisplayFreeSync {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_display_free_sync__is_supported/>
+    #[doc(alias = "IsSupported")]
     pub fn is_supported(&self) -> Result<bool> {
         let mut supported = MaybeUninit::uninit();
         let result =
@@ -26,6 +29,8 @@ impl DisplayFreeSync {
         Error::from_result_with_assume_init_on_success(result, supported).map(|s| s != 0)
     }
 
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_display_free_sync__is_enabled/>
+    #[doc(alias = "IsEnabled")]
     pub fn is_enabled(&self) -> Result<bool> {
         let mut enabled = MaybeUninit::uninit();
         let result =

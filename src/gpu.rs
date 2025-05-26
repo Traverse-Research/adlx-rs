@@ -51,7 +51,7 @@ impl Gpu {
 
         Error::from_result_with_assume_init_on_success(result, is_external).map(|x| x != 0)
     }
-    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u__name/#doxid-d-o-x-i-a-d-l-x-g-p-u-name>
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u__name/>
     #[doc(alias = "Name")]
     pub fn name(&self) -> Result<&str> {
         let mut name = MaybeUninit::uninit();
@@ -197,7 +197,7 @@ impl Gpu1 {
 
         Error::from_result_with_assume_init_on_success(result, multi_gpu_mode)
     }
-    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u1__product_name/#doxid-d-o-x-i-a-d-l-x-g-p-u1-product-name>
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_g_p_u1__product_name/>
     #[doc(alias = "ProductName")]
     pub fn product_name(&self) -> Result<&str> {
         let mut product_name = MaybeUninit::uninit();

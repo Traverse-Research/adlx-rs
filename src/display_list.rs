@@ -8,6 +8,7 @@ use super::{
     Display,
 };
 
+/// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_display_list/>
 #[derive(Clone, Debug)]
 #[repr(transparent)]
 #[doc(alias = "IADLXDisplayList")]
@@ -28,6 +29,7 @@ impl Deref for DisplayList {
 }
 
 impl DisplayList {
+    /// <https://gpuopen.com/manuals/adlx/adlx-_d_o_x__i_a_d_l_x_display_list__at/>
     #[doc(alias = "At_DisplayList")]
     pub fn at(&self, location: u32) -> Result<Display> {
         let mut display = MaybeUninit::uninit();
