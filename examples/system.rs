@@ -20,7 +20,6 @@ fn main() -> Result<()> {
             let gpu = gpu_list.at(i)?;
             println!("GPU #{}: {}", i, gpu.name()?);
 
-            // Crashes
             let gpu1 = gpu.cast::<Gpu1>();
             dbg!(&gpu1);
             if let Ok(gpu1) = gpu1 {

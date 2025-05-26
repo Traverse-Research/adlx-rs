@@ -67,7 +67,7 @@ pub unsafe trait Interface: Sized {
     // TODO(Marijn): Or deref every interface to `InterfaceImpl`, per a true interface hierarchy?
     #[doc(alias = "QueryInterface")]
     fn cast<I: Interface>(&self) -> Result<I> {
-        let interface: InterfaceImpl = unsafe { std::mem::transmute_copy(self) };
+        let interface: &InterfaceImpl = unsafe { std::mem::transmute(self) };
         interface.cast()
     }
 }
