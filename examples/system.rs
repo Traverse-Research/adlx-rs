@@ -1,6 +1,6 @@
 //! Open the ADLX library, retrieve [`adlx::adlx::system::System`], and call a simple function on it
 
-use adlx::{helper::AdlxHelper, Gpu1, Interface};
+use adlx::{helper::AdlxHelper, Gpu1, Gpu2, Interface};
 use anyhow::Result;
 
 fn main() -> Result<()> {
@@ -21,7 +21,6 @@ fn main() -> Result<()> {
             println!("GPU #{}: {}", i, gpu.name()?);
 
             let gpu1 = gpu.cast::<Gpu1>();
-            dbg!(&gpu1);
             if let Ok(gpu1) = gpu1 {
                 // Test Deref:
                 dbg!(gpu1.name()?);
@@ -30,6 +29,16 @@ fn main() -> Result<()> {
                 // Test Deref when passing as argument:
                 let gpu_metrics = performance_monitoring_services.current_gpu_metrics(&gpu1)?;
                 dbg!(&gpu_metrics);
+            }
+
+            let gpu2 = gpu.cast::<Gpu2>();
+            if let Ok(gpu2) = gpu2 {
+                dbg!(gpu2.amd_software_release_date()?);
+                dbg!(gpu2.amd_software_edition()?);
+                dbg!(gpu2.amd_software_version()?);
+                dbg!(gpu2.driver_version()?);
+                dbg!(gpu2.amd_windows_driver_version()?);
+                dbg!(gpu2.luid()?);
             }
 
             let gpu_metrics = performance_monitoring_services.current_gpu_metrics(&gpu)?;
