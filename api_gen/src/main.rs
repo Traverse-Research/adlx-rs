@@ -5,10 +5,7 @@ fn main() {
 
     let header_path = crate_root.join("wrapper.h");
 
-    let Ok(msrv) = bindgen::RustTarget::stable(74, 0) else {
-        // Cannot simply unwrap until https://github.com/rust-lang/rust-bindgen/pull/3055 lands
-        panic!()
-    };
+    let msrv = bindgen::RustTarget::stable(74, 0).unwrap();
 
     let bindings = bindgen::Builder::default()
         .header(header_path.to_string_lossy())
