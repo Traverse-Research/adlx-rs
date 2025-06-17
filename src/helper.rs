@@ -5,7 +5,7 @@ use anyhow::{ensure, Context, Result};
 use super::{ffi, result::Error, system::System};
 
 // Taken from ADLXDefines.h.
-// Refer to ADLX_MAKE_FULL_VERSION and ADLX_FULL_VERSION.
+// Refer to ADLX_MAKE_FULL_VER and ADLX_FULL_VERSION.
 const HEADER_VERSION: u64 = ((ffi::ADLX_VER_MAJOR as u64) << 48)
     | ((ffi::ADLX_VER_MINOR as u64) << 32)
     | ((ffi::ADLX_VER_RELEASE as u64) << 16)
@@ -116,8 +116,13 @@ impl AdlxHelper {
         &self.system
     }
 
-    pub fn full_version(&self) -> u64 {
-        self.full_version
+    /// Returns `(major, minor, release, build_num)`
+    pub fn full_version(&self) -> (u16, u16, u16, u16) {
+        let major = (self.full_version >> 48) as u16;
+        let minor = (self.full_version >> 32) as u16;
+        let release = (self.full_version >> 16) as u16;
+        let build_num = (self.full_version) as u16;
+        (major, minor, release, build_num)
     }
 
     pub fn version(&self) -> &str {
