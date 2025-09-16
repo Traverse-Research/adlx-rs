@@ -51,7 +51,7 @@ impl GpuList {
         Error::from_result(result)
     }
 
-    pub fn iter(&self) -> GpuIterator {
+    pub fn iter(&self) -> GpuIterator<'_> {
         GpuIterator { list: self, i: 0 }
     }
 }
