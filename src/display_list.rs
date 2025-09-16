@@ -40,7 +40,7 @@ impl DisplayList {
             .map(|display| unsafe { Display::from_raw(display) })
     }
 
-    pub fn iter(&self) -> DisplayIterator {
+    pub fn iter(&self) -> DisplayIterator<'_> {
         DisplayIterator { list: self, i: 0 }
     }
 }
